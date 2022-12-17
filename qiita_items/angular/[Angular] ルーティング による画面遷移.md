@@ -184,13 +184,13 @@ export class AppModule { }
 ## 実行結果
 
 * Page-Aに遷移をクリックした
-![routing-01.png](https://qiita-image-store.s3.amazonaws.com/0/193342/cc388278-6af8-1808-be30-9ec801228623.png)
+    * ![routing-01.png](https://qiita-image-store.s3.amazonaws.com/0/193342/cc388278-6af8-1808-be30-9ec801228623.png)
 
 * Page-Bに遷移をクリックした
-![routing-02.png](https://qiita-image-store.s3.amazonaws.com/0/193342/9a664a4a-1681-ac4e-ff64-dd493485d3e1.png)
+    * ![routing-02.png](https://qiita-image-store.s3.amazonaws.com/0/193342/9a664a4a-1681-ac4e-ff64-dd493485d3e1.png)
 
 * Page-Cに遷移をクリックした
-![routing-03.png](https://qiita-image-store.s3.amazonaws.com/0/193342/63cfa471-6c77-c7b7-c5e1-f2ed770e18c1.png)
+    * ![routing-03.png](https://qiita-image-store.s3.amazonaws.com/0/193342/63cfa471-6c77-c7b7-c5e1-f2ed770e18c1.png)
 
 
 となる。
@@ -309,16 +309,16 @@ const ROUTE_TABLE: Routes = [
 ## 実行結果
 
 * アプリ起動直後
-<img width="520" alt="routing-04.png" src="https://qiita-image-store.s3.amazonaws.com/0/193342/7971728f-be69-5591-bcc9-430f2e5aa6b3.png">
+    * <img width="520" alt="routing-04.png" src="https://qiita-image-store.s3.amazonaws.com/0/193342/7971728f-be69-5591-bcc9-430f2e5aa6b3.png">
 
 * Page-Bに遷移をクリックした
-<img width="520" alt="routing-05.png" src="https://qiita-image-store.s3.amazonaws.com/0/193342/94e4a6b2-05b8-6041-7ae3-dc7964efff5a.png">
+    * <img width="520" alt="routing-05.png" src="https://qiita-image-store.s3.amazonaws.com/0/193342/94e4a6b2-05b8-6041-7ae3-dc7964efff5a.png">
 
 * Page-Cに遷移をクリックした
-<img width="520" alt="routing-06.png" src="https://qiita-image-store.s3.amazonaws.com/0/193342/615ef62c-f603-d9e5-813c-e07b219055fe.png">
+    * <img width="520" alt="routing-06.png" src="https://qiita-image-store.s3.amazonaws.com/0/193342/615ef62c-f603-d9e5-813c-e07b219055fe.png">
 
 * Page-Aに遷移をクリックした
-<img width="521" alt="routing-07.png" src="https://qiita-image-store.s3.amazonaws.com/0/193342/2fd5f971-f7ae-3478-e395-360f9e40eae0.png">
+    * <img width="521" alt="routing-07.png" src="https://qiita-image-store.s3.amazonaws.com/0/193342/2fd5f971-f7ae-3478-e395-360f9e40eae0.png">
 
 
 以上の動きから
