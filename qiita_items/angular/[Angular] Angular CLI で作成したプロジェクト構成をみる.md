@@ -17,11 +17,11 @@
 
 プロジェクト構成の説明に入る前に､そもそも Angular とは何かというところから｡
 
-Angular は Google が提供する JavaScript のフレームワークであり､**コンポーネント指向**であるという特徴を持つ｡ ここでいうコンポーネントとはページを構成する UI 部品を指し､ロジック､ビュー､スタイルを定義する｡
+Angular は Google が提供する JavaScript のフレームワークであり､ **コンポーネント指向** であるという特徴を持つ｡ ここでいうコンポーネントとはページを構成する UI 部品を指し､ロジック､ビュー､スタイルを定義する｡
 
 Angular ではこのコンポーネントを組み合わせることでアプリを構築していくことになる｡
 
-コンポーネントは基本的に独立した部品であり､コンポーネントのスタイルは**原則として定義したコンポーネントにのみ適用**される｡ つまり他のコンポーネントで定義されたスタイルと競合･衝突することは無い｡
+コンポーネントは基本的に独立した部品であり､コンポーネントのスタイルは **原則として定義したコンポーネントにのみ適用** される｡ つまり他のコンポーネントで定義されたスタイルと競合･衝突することは無い｡
 
 開発言語は **TypeScript** が推奨されている｡ 本家のチュートリアルも TypeScript で説明されているので､特に嫌がる理由が無ければ TypeScript で開発を進めるのが良い｡
 
@@ -29,21 +29,21 @@ Angular ではこのコンポーネントを組み合わせることでアプリ
 
 ## この記事を実施した環境
 
-* Windows10 Home 64bit
-* node v8.2.1
-* npm v4.0.5
-* angular/cli v1.2.6
-* Angular v4.3.2
+- Windows10 Home 64bit
+- node v8.2.1
+- npm v4.0.5
+- angular/cli v1.2.6
+- Angular v4.3.2
 
 ## プロジェクトディレクトリ
 Angulr CLI で作成されたプロジェクトディレクトリ配下は次の通り｡
 まずはプロジェクトディレクトリ配下にあるディレクトリやファイルの説明から｡
 
-```:プロジェクトの作成
+```bash:プロジェクトの作成
 $ ng new my-app
 ```
 
-```:ディレクトリの中を確認
+```bash:ディレクトリの中を確認
 $ cd my-app
 $ ls -l
 total 281
@@ -57,46 +57,46 @@ drwxr-xr-x 1 hogehoge 197121    0 9月  24 16:03 src/
 -rw-r--r-- 1 hogehoge 197121  363 9月  24 16:03 tsconfig.json
 -rw-r--r-- 1 hogehoge 197121 3040 9月  24 16:03 tslint.json
 ```
-   
-* e2e/
- * End To End テスト関連のディレクトリ｡
 
-* karma.conf.js
- * ユニットテストのテストランナー Karma の設定ファイル｡ユニットテストの設定はここに記述する｡
+- e2e/
+    - End To End テスト関連のディレクトリ｡
 
-* node_modules/
- * このプロジェクトで利用する npm ライブラリの配置先｡
- * ```npm install``` を ```-g``` をつけないで実行すると､このディレクトリ配下にインストールされる｡
+- karma.conf.js
+    - ユニットテストのテストランナー Karma の設定ファイル｡ユニットテストの設定はここに記述する｡
 
-* package.json
- * npm の設定ファイル｡このプロジェクトで利用するライブラリ情報を管理する｡
- * ```npm install``` で ```--save``` や ```--save-dev``` をつけて実行した場合､このファイルに自動で情報が追記される｡
- * 逆にこのファイルに記載されてさえいれば､ ```npm install``` を引数無しで実行した場合にプロジェクトに必要なライブラリがインストールされる｡
+- node_modules/
+    - このプロジェクトで利用する npm ライブラリの配置先｡
+    - `npm install` を `-g` をつけないで実行すると､このディレクトリ配下にインストールされる｡
 
-* protractor.conf.js
- * E2E テストのテストランナー Protractor の設定ファイル｡
- * E2E テストの設定はここに記述する｡
+- package.json
+    - npm の設定ファイル｡このプロジェクトで利用するライブラリ情報を管理する｡
+    - `npm install` で `--save` や `--save-dev` をつけて実行した場合､このファイルに自動で情報が追記される｡
+    - 逆にこのファイルに記載されてさえいれば､ `npm install` を引数無しで実行した場合にプロジェクトに必要なライブラリがインストールされる｡
 
-* README.md
- * このプロジェクトの説明ファイル｡
- * 具体的には作成するアプリについての説明を記述する｡
+- protractor.conf.js
+    - E2E テストのテストランナー Protractor の設定ファイル｡
+    - E2E テストの設定はここに記述する｡
 
-* <font color="red">src/</font>
- * <font color="red">このプロジェクトで作成するアプリ本体を格納するディレクトリ｡</font>
- * <font color="red">実装していくコードはここに配置していく｡</font>
+- README.md
+    - このプロジェクトの説明ファイル｡
+    - 具体的には作成するアプリについての説明を記述する｡
 
-* tsconfig.json
- * TypeScript を JavaScript にトランスパイルための設定情報ファイル｡
- * (Angular は基本的に TypeScript で実装していく)
+- <font color="red">src/</font>
+    - <font color="red">このプロジェクトで作成するアプリ本体を格納するディレクトリ｡</font>
+    - <font color="red">実装していくコードはここに配置していく｡</font>
 
-* tslint.json
- * TSLint の設定情報｡
+- tsconfig.json
+    - TypeScript を JavaScript にトランスパイルための設定情報ファイル｡
+    - (Angular は基本的に TypeScript で実装していく)
+
+- tslint.json
+    - TSLint の設定情報｡
 
 ## src/ 配下
 
 プロジェクト直下の構成は見たので､次に作成するアプリ本体である src/ 配下を確認する｡
 
-```:src/配下の構成
+```bash:src/配下の構成
 $ cd src/
 $ ls -l
 total 30      
@@ -114,53 +114,53 @@ drwxr-xr-x 1 hogehoge 197121    0 9月  24 16:03 environments/
 -rw-r--r-- 1 hogehoge 197121  104 9月  24 16:03 typings.d.ts
 ```    
 
-* <font color="red">app/</font>
- * <font color="red">Angular アプリのコード一式</font>
+- <font color="red">app/</font>
+    - <font color="red">Angular アプリのコード一式</font>
 
-* assets/
- * 画像ファイルや npm 以外で導入する JavaScript ライブラリ等を配置する｡
+- assets/
+    - 画像ファイルや npm 以外で導入する JavaScript ライブラリ等を配置する｡
 
-* environments/
- * 本番(Product)環境とか開発(Development)環境とか､環境設定情報を記述したファイルを配置する｡
+- environments/
+    - 本番(Product)環境とか開発(Development)環境とか､環境設定情報を記述したファイルを配置する｡
 
-* favicon.ico
- * favicon｡ブックマーク時のアイコン｡
+- favicon.ico
+    - favicon｡ブックマーク時のアイコン｡
 
-* index.html
- * アプリのトップページ｡
- * ここで読み込まれた Angular モジュールを元にアプリが構成されていく｡
+- index.html
+    - アプリのトップページ｡
+    - ここで読み込まれた Angular モジュールを元にアプリが構成されていく｡
 
-* main.ts
- * スタートアップファイル｡
- * アプリを起動するためのスタートアップコードを記述する｡
+- main.ts
+    - スタートアップファイル｡
+    - アプリを起動するためのスタートアップコードを記述する｡
 
-* polyfills.ts
- * polyfill の設定情報を管理する｡
- * Angular が提供する機能に対応できていないブラウザにアプリを適応させたい場合､ここを編集する｡
- * 例えば Angular アプリを [IE11 に対応させたい](https://qiita.com/ksh-fthr/items/68c5e08a9cdac7c6b9ee#ie11%E5%AF%BE%E5%BF%9C20170902-%E8%BF%BD%E8%A8%98)場合など｡
+- polyfills.ts
+    - polyfill の設定情報を管理する｡
+    - Angular が提供する機能に対応できていないブラウザにアプリを適応させたい場合､ここを編集する｡
+    - 例えば Angular アプリを [IE11 に対応させたい](https://qiita.com/ksh-fthr/items/68c5e08a9cdac7c6b9ee#ie11%E5%AF%BE%E5%BF%9C20170902-%E8%BF%BD%E8%A8%98)場合など｡
 
-* styles.css
- * スタイルシート｡
- * グローバルで適用させたい CSS はここに記述する｡
+- styles.css
+    - スタイルシート｡
+    - グローバルで適用させたい CSS はここに記述する｡
 
-* test.ts
- * ユニットテストの設定ファイル｡
+- test.ts
+    - ユニットテストの設定ファイル｡
 
-* tsconfig.app.json
- * TypeScript を JavaScript にトランスパイルための設定情報ファイル｡
- * アプリ用｡
+- tsconfig.app.json
+    - TypeScript を JavaScript にトランスパイルための設定情報ファイル｡
+    - アプリ用｡
 
-* tsconfig.spec.json
- * TypeScript を JavaScript にトランスパイルための設定情報ファイル｡
- * テストコード用｡
+- tsconfig.spec.json
+    - TypeScript を JavaScript にトランスパイルための設定情報ファイル｡
+    - テストコード用｡
 
-* typings.d.ts
- * TypeScript の型定義情報を管理する｡
+- typings.d.ts
+    - TypeScript の型定義情報を管理する｡
 
 ## src/app/ 配下
 最後に Angular アプリのコード一式を配置する src/app/ 配下を見る｡
 
-```:src/app/配下の構成
+```bash:src/app/配下の構成
 $ cd app/
 $ ls -l
 total 10
@@ -170,33 +170,33 @@ total 10
 -rw-r--r-- 1 hogehoge 197121  207 9月  24 16:03 app.component.ts
 -rw-r--r-- 1 hogehoge 197121  314 9月  24 16:03 app.module.ts
 ```
-   
-* app.component.css
- * app.component という Angular コンポーネントの css テンプレートを記述する｡
 
-* app.component.html
- * app.component という Angular コンポーネントの html テンプレートを記述する｡
+- app.component.css
+    - app.component という Angular コンポーネントの css テンプレートを記述する｡
 
-* app.component.spec.ts
- * app.component という Angular コンポーネントのユニットテストを記述する｡
+- app.component.html
+    - app.component という Angular コンポーネントの html テンプレートを記述する｡
 
-* app.component.ts
- * app.component という Angular コンポーネントの実装コードを記述する｡
+- app.component.spec.ts
+    - app.component という Angular コンポーネントのユニットテストを記述する｡
 
-* app.module.ts
- * この Angular プロジェクトで作成するアプリの ルートモジュールを記述する｡
+- app.component.ts
+    - app.component という Angular コンポーネントの実装コードを記述する｡
+
+- app.module.ts
+    - この Angular プロジェクトで作成するアプリの ルートモジュールを記述する｡
 
 ## 終わりに
 プロジェクト構成として各ディレクトリやファイルを見てきたので､次回はアプリを作成していく上で必要なファイルの中身を見ていく｡
 具体的には
 
-* src/
- * index.html
- * main.ts
-* src/app/
- * app.component.css
- * app.component.html
- * app.component.ts
- * app.module.ts
+- src/
+    - index.html
+    - main.ts
+- src/app/
+    - app.component.css
+    - app.component.html
+    - app.component.ts
+    - app.module.ts
 
 を見ていく｡
