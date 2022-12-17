@@ -4,5 +4,7 @@
 
   // markdownlint の設定
   "markdownlint.config": {
+    "MD025": false,  // single-title/single-h1: Multiple top-level headings in the same documentmarkdownlintMD025 を黙らせる
+    "MD033": false   // no-inline-html: Inline HTML [Element: details]markdownlintMD033 を黙らせる
   }
 }
