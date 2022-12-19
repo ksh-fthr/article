@@ -1,7 +1,7 @@
 # はじめに
 
-Visual Studio Code の 拡張機能 に [markdownolint](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint) を追加しました。  
-makrdwonlint は markdown の文法チェックを行ってくれるツールなのですが、項目によってはエラーを出さずにそのままとしておきたい、というケースがあります。
+Visual Studio Code の 拡張機能 に [markdownolint](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint) markdown の文法チェックを行ってくれるツールがあります。  
+これは誤った書き方だったり良くない書き方をチェックしてくれるのでとても重宝するのですが、項目によってはエラーを出さずにそのままとしておきたい、というケースがあります。
 
 この記事は markdownlint の設定と、上記のようなケースにおける設定について備忘録として残すものです。
 
