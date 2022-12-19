@@ -1,4 +1,12 @@
 {
+  "editor.detectIndentation": true,
+  "[markdown]": {
+    "editor.autoIndent": "advanced",
+    "editor.indentSize": "tabSize",
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+  },
+ 
   // 拡張機能をおすすめさせる(これ false で おすすめとして出る のがややこしい)
   "extensions.ignoreRecommendations": false, // ignore を false だから「おすすめ」ということになる
 
