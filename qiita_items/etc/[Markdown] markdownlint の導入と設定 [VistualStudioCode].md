@@ -131,7 +131,7 @@ MD007/ul-indent: Unordered list indentation [Expected: 2; Actual: 4]markdownlint
 
 言語ごとに設定を行いたいので、 [Visual Studio Code 公式のこちら](https://code.visualstudio.com/docs/getstarted/settings#_language-specific-editor-settings) を参考に Markdown 用の設定を行いたいので、`.vscode/settings.json` に次のセクションを追加します。
 
-```json:settings.jso
+```json:settings.json
 {
   // Markdown 用の設定を行うためのセクション
   "[markdown]": {
