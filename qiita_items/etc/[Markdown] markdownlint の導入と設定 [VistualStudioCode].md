@@ -117,10 +117,15 @@ MD033/no-inline-html: Inline HTML [Element: summary]markdownlintMD033
 
 ## インデントを `2` にするように怒られたのでエディタの設定を変える
 
-markdownlint にインデントを `2` とするよう怒られたので、その設定を行います。  
-( スルーするのではなく Visual Studio Code の設定でインデントを `2` とします )
+markdownlint にインデントを `2` とするよう怒られた
 
-( 画像を挿入 )
+![スクリーンショット 2022-12-19 21 41 29](https://user-images.githubusercontent.com/3907225/208432690-8f3135e4-dbc9-4a39-bb39-c8dcff8e7d43.png)
+```normal
+MD007/ul-indent: Unordered list indentation [Expected: 2; Actual: 4]markdownlintMD007
+```
+
+ので、その対応のための設定を行います。  
+( スルーするのではなく Visual Studio Code の設定でインデントを `2` とします )
 
 ### markdown 用の設定エントリを追加する
 
