@@ -1,0 +1,18 @@
+{
+  "editor.detectIndentation": true,
+  "[markdown]": {
+    "editor.autoIndent": "advanced",
+    "editor.indentSize": "tabSize",
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+  },
+ 
+  // 拡張機能をおすすめさせる(これ false で おすすめとして出る のがややこしい)
+  "extensions.ignoreRecommendations": false, // ignore を false だから「おすすめ」ということになる
+
+  // markdownlint の設定
+  "markdownlint.config": {
+    "MD025": false,  // single-title/single-h1: Multiple top-level headings in the same documentmarkdownlintMD025 を黙らせる
+    "MD033": false   // no-inline-html: Inline HTML [Element: details]markdownlintMD033 を黙らせる
+  }
+}
