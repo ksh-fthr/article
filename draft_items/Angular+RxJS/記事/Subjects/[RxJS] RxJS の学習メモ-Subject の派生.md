@@ -1,16 +1,17 @@
 # はじめに
 
-本記事は [[RxJS] RxJS の学習メモ-Observable と Observer](https://qiita.com/ksh-fthr/items/2933492929bbeccece50) の続きです。
-RxJS を使っていく上で行った学習の備忘録になります。主に次に挙げた内容のブラッシュアップを狙いました。
+本記事は [[RxJS] RxJS の学習メモ-Subject](https://qiita.com/ksh-fthr/items/54b19b4160505e2fddd9) の続きです。
+RxJS を使っていく上で行った学習の備忘録になります。主に次に挙げた内容を目的とします。
 
 :::note info
 
 - 知らないことによる忌避感をなくす
   - RxJS を使った実装は個人的に初見殺しもいいとこな実装だと思っている
   - 知ることで「あ、別に怖がることないじゃん」という感じに持っていきたい
-- 知見の向上、また思い込みや間違った理解の是正を狙う
+- 知見の向上
   - ライブラリを改めてみることでより良い実装の方法、テクニックを得る
-  - 正しい、最適だと思っていたものが実は間違っていたことも充分あり得るのでその辺が是正できれば御の字
+- 思い込みや間違った理解の是正
+  - 正しい、最適だと思っていたものが実は間違っていたことも充分あり得るので、その辺が是正できれば御の字
 
 :::
 
@@ -28,240 +29,15 @@ RxJS を使っていく上で行った学習の備忘録になります。主に
 
 # この記事でやること
 
-## `Subject` について触れてみる
+## `Subject` の派生について触れてみる
 
-本記事では `Subject` について触れます。
-`Subject` は RxJS の基本コンセプトである 6つ のコンセプトに含まれるものです。
+[`Subject`](https://rxjs.dev/guide/subject#subject) の派生である [`BehaviorSubject`](https://rxjs.dev/guide/subject#behaviorsubject), [`ReplaySubject`](https://rxjs.dev/guide/subject#replaysubject), [`AsyncSubject`](https://rxjs.dev/guide/subject#asyncsubject) について触れたいと思います。
 
-## RxJS の基本コンセプト
+冒頭でも触れておりますが、 `Subject` については以下の記事で扱っております。ご興味あればご参照ください。
 
-RxJS の基本コンセプトは `Observables`, `Observer`, `Subscription`, `Operators`, `Subjects`, `Schedulers` の 6つ があります。
-これは公式のドキュメントにも [Overview](https://rxjs.dev/guide/overview) に下記のとおり記載されています。
-( 太字については本記事にて加工しました )
+- [[RxJS] RxJS の学習メモ-Subject](https://qiita.com/ksh-fthr/items/54b19b4160505e2fddd9)
 
-:::note info
-
-> The essential concepts in RxJS which solve async event management are:
->
-> - Observable: represents the idea of an invokable collection of future values or events.
-> - Observer: is a collection of callbacks that knows how to listen to values delivered by the Observable.
-> - Subscription: represents the execution of an Observable, is primarily useful for cancelling the execution.
-> - Operators: are pure functions that enable a functional programming style of dealing with collections with operations like map, filter, concat, reduce, etc.
-> - **Subject: is equivalent to an EventEmitter, and the only way of multicasting a value or event to multiple Observers.**
-> - Schedulers: are centralized dispatchers to control concurrency, allowing us to coordinate when computation happens on e.g. setTimeout or requestAnimationFrame or others.
->
-> (Deepl による翻訳)
->
-> 非同期イベント管理を解決するRxJSの本質的な概念は以下の通りである：
->
-> - Observable（オブザーバブル）：将来の値やイベントの呼び出し可能なコレクション。
-> - Observer：Observableによって配信される値をリッスンする方法を知っているコールバックのコレクションです。
-> - サブスクリプション: Observableの実行を表し、主に実行をキャンセルするのに役立つ。
-> - Operators: map、filter、concat、reduceなどの操作でコレクションを扱う関数型プログラミングスタイルを可能にする純粋な関数です。
-> - **Subject: EventEmitterに相当し、値やイベントを複数のObserversにマルチキャストする唯一の方法です。**
-> - Schedulers: 同時実行をコントロールするための集中ディスパッチャで、例えばsetTimeoutやrequestAnimationFrameなどで計算が発生するタイミングを調整できる。
-
-:::
-
-前置きが長くなりましが、これから実際に `Subject` を見ていきます。
-
-# [Subject](https://rxjs.dev/guide/subject)
-
-前回の記事: [[RxJS] RxJS の学習メモ-Observable と Observer](https://qiita.com/ksh-fthr/items/2933492929bbeccece50) で `Observer` と `Observable` を見ました。
-が、筆者の経験上( あまり経験豊富とは言えませんが )、 これらはあまり使ったり見たりした記憶がありません。
-殆どの場合 [Subject](https://rxjs.dev/guide/subject#subject) だったり、その派生である [BehaviorSubject](https://rxjs.dev/guide/subject#behaviorsubject) を使ってます。
-
-そして、`Subject` とは何かをまとめると下記になります。
-
-:::note info
-
-**`Subject` とはなにか**
-
-- `Subject` ≒ `Observable`
-- `Subject` は **マルチキャスト** でストリームを流す
-- ( `Observable` はユニキャスト  でストリームを流す )
-- `Subject` は `Observable` と `Observer` の両方の性質をもつ
-
-※ 補足: マルチキャスト・ユニキャストとは以下を意味します
-
-**マルチキャストとユニキャスト**
-
-- マルチキャスト
-  - 購読している `Observer` が一つの `Observable` 実行を共有する
-- ユニキャスト
-  - 購読している `Observer` がそれぞれ `Observable` の独立した実行を所有する
-
-:::
-
-次の項目では **`Subject` ≒ `Observable`** と **`Subject` は `Observable` と `Observer` の両方の性質をもつ** が示すところを見ていきます。
-
-## Subject の動きをサンプルコードで確認する
-
-以下のサンプルコードは [前回記事のサンプルコード](https://qiita.com/ksh-fthr/items/2933492929bbeccece50#%E3%82%B5%E3%83%B3%E3%83%97%E3%83%AB%E3%82%B3%E3%83%BC%E3%83%89) `Subject` に置き換えたものです。
-このコードで **消費者としての Observer** と **配信者としての Observable** の両方の役割を **Subject** が担っていることが確認できます。
-
-```typescript
-import { Subject } from 'rxjs';
-
-// (1) 最初のブロック
-// (1-1) 消費者であり配信者でもある `subject`
-const subject = new Subject();
-
-// (2) 二番目のブロック
-// (2-1) `subscribe` の実行前であることを示す
-console.log('just before subscribe');
-
-// (3) 三番目のブロック
-// (3-1) `subscribe` によるストリームの購読を行う
-subject.subscribe({
-  next: (x) => {
-    console.log('got value ' + x);
-  },
-  error: (err) => {
-    console.error('something wrong occurred: ' + err);
-  },
-  complete: () => {
-    console.log('done');
-  },
-});
-
-// (4) 四番目のブロック
-// (4-1) `next` でストリームを配信する
-subject.next(1);
-subject.next(2);
-subject.next(3);
-
-// (4-2) `next` によるストリーム配信を遅延実行する
-setTimeout(() => {
-  subject.next(4);
-  subject.complete();
-}, 1000);
-
-// (5) 五番目のブロック
-console.log('just after subscribe');
-```
-
-## 詳しく見ていく
-
-### 最初のブロック
-
-```typescript
-// (1) 最初のブロック
-// (1-1) 消費者であり配信者でもある `subject`
-const subject = new Subject();
-```
-
-**(1-1) 消費者であり配信者でもある `subject`**
-コメントにあるように **消費者であり配信者でもある `subject`** のインスタンスを生成しています。
-これで
-
-- ストリームを配信する準備
-- ストリームを購読する準備
-
-が出来ました。
-以降の処理は変数 `subject` に対して `next()` による配信と `subscribe()` による購読を行います。
-
-### 二番目のブロック
-
-```typescript
-// (2) 二番目のブロック
-// (2-1) `subscribe` の実行前であることを示す
-console.log('just before subscribe');
-```
-
-**(2-1) `subscribe` の実行前であることを示す**
-このブロックは `subscribe` の前に実行されるログ、ということで項目を分けました。
-**`Observable` は **subscribe** されることでストリームが購読される** のは `subject` でも同じです。
-従いまして、サンプルコードの処理ではまず最初にこのログが出力されます。
-
-### 三番目のブロック
-
-```typescript
-// (3) 三番目のブロック
-// (3-1) `subscribe` によるストリームの購読を行う
-subject.subscribe({
-  next: (x) => {
-    console.log('got value ' + x);
-  },
-  error: (err) => {
-    console.error('something wrong occurred: ' + err);
-  },
-  complete: () => {
-    console.log('done');
-  },
-});
-```
-
-**(3-1) `subscribe` によるストリームの購読を行う**
-[前項](#二番目のブロック) で触れていますとおり、ストリームは `subscribe` をして初めて配信されてきます。
-逆に言えば `subscribe` をしていない限りストリームは流れてこない、ということです。
-
-`subject` に流れてくるストリームを購読する準備として、ここで `subscribe` を実行します。
-
-**補足:**
-`next` のあとに `subscribe` をしても、その `next` で流したストリームは購読できません。
-これは `subscribe` による購読準備を行う前にストリームが流れてしまっているからです。
-
-`subscribe` による購読準備は `next` によるストリームが流れる前に行っておく必要があります。
-
-### 四番目のブロック
-
-```typescript
-// (4) 四番目のブロック
-// (4-1) `next` でストリームを配信する
-subject.next(1);
-subject.next(2);
-subject.next(3);
-
-// (4-2) `next` によるストリーム配信を遅延実行する
-setTimeout(() => {
-  subject.next(4);
-  subject.complete();
-}, 1000);
-```
-
-**(4-1) `next` でストリームを配信する**
-ストリームの配信です。ここの `next(1)~next(3)` は同期的に順番にストリームが流れます。
-
-**(4-2) `next` によるストリーム配信を遅延実行する**
-同じくストリームの配信ですが、ここでは `setTimeout` により遅延実行しています。
-後述の出力結果にあるとおり、ここで遅延実行された `next(5)` は 五番目のブロック のログ出力後に配信され、`subscribe` で処理されます。
-
-### 五番目のブロック
-
-```typescript
-// (5) 五番目のブロック
-console.log('just after subscribe');
-```
-
-**(5) 五番目のブロック**
-[二番目のブロック](#二番目のブロック) と同じく、`subscribe` が実行された後に出るログ、ということで項目を分けました。
-このログがあることで、[四番目のブロック](#四番目のブロック) で示した遅延実行の `next(4)` の実行結果が分かりやすくなっています。
-
-## 実行結果
-
-このコードの実行結果は次のとおりです。
-
-```log
-// Logs:
-// just before subscribe
-// got value 1           // subscribe によって出力されたログ
-// got value 2           // 同上
-// got value 3           // 同上
-// just after subscribe
-// got value 4           // subscribe によって出力されたログ
-// done                  // complete によって出力されたログ
-```
-
-# まとめにかえて
-
-以上、 `Subject` が `Observer` と `Observable` の代替となることをサンプルコードで見てきました。
-
-なお本記事ではベーシックな `Subject` について触れましたが、`Subject` にはそのの派生となる `BehaviorSubject`, `ReplaySubject`, `AsyncSubject` があります。
-次の記事ではそれらの派生について触れたいと思います。
-
-
-# [**BehaviorSubject**](https://rxjs.dev/guide/subject#behaviorsubject)
+# [BehaviorSubject](https://rxjs.dev/guide/subject#behaviorsubject)
 
 `BehaviorSubject` についての説明を上記リンクから転載します。
 
@@ -278,7 +54,7 @@ console.log('just after subscribe');
 
 :::
 
-この説明で大事なのは次の部分です
+この説明で大事なのは次の部分です。
 
 :::note info
 
@@ -288,13 +64,14 @@ console.log('just after subscribe');
 
 この一文が示す意味をサンプルコードで確認します。
 
-## BehaviorSubject の動きをサンプルコードで確認する
+## BehaviorSubject の動きを確認する
 
 ```typescript
 import { BehaviorSubject } from 'rxjs';
 
 // (1) 最初のブロック
-const subject = new BehaviorSubject(0); // 0 is the initial value
+// 初期値として 0 を設定, ここで設定した `0` はこの直後の `subscribe` で購読される
+const subject = new BehaviorSubject(0);
 
 // (2) 二番目のブロック
 // この時点で subject を初期化した値である `0` が出力される
@@ -303,10 +80,14 @@ subject.subscribe({
 });
 
 // (3) 三番目のブロック
-// ここでは `1` が出力される
+// `1` を `subject` のストリームに流す.
+// この `1` は ↑ の subscribe で購読される
 subject.next(1);
-// ここで `2` が ↑ の subscribe と ↓ の subscribe で出力される
-// `1` のストリームはこの `2` のストリームで上書きされるので出力されない
+// `2` を `subject` のストリームに流す.
+// この `2` は ↑ の subscribe と ↓ の subscribe で出力される
+// 
+// なお、↓ の subscribe において `1` のストリームは
+// この `2` のストリームで上書きされるので出力されない
 subject.next(2);
 
 // (4) 四番目のブロック
@@ -321,72 +102,27 @@ subject.subscribe({
 subject.next(3);
 ```
 
-## 詳しく見ていく
+### 各ブロックの説明
 
-### 最初のブロック
+要点を実行結果のログで見ていきたいので、各ブロックの説明はコード中のコメントをご確認ください。
 
-```typescript
-// (1) 最初のブロック
-const subject = new BehaviorSubject(0); // 0 is the initial value
-```
-
-### 二番目のブロック
-
-```typescript
-// (2) 二番目のブロック
-// この時点で subject を初期化した値である `0` が出力される
-subject.subscribe({
-  next: (v) => console.log(`observerA: ${v}`),
-});
-```
-
-### 三番目のブロック
-
-```typescript
-// (3) 三番目のブロック
-// ここでは `1` が出力される
-subject.next(1);
-// ここで `2` が ↑ の subscribe と ↓ の subscribe で出力される
-// `1` のストリームはこの `2` のストリームで上書きされるので出力されない
-subject.next(2);
-```
-
-### 四番目のブロック
-
-```typescript
-// (4) 四番目のブロック
-// 直前に流れた `2` が出力される
-// また ↓ の `3` が実行されたら それも出力される
-subject.subscribe({
-  next: (v) => console.log(`observerB: ${v}`),
-});
-```
-
-### 五番目のブロック
-
-```typescript
-// (5) 五番目のブロック
-// 最初の subscribe と 2つめの subscribe で `3` が出力される
-subject.next(3);
-```
-
-## 実行結果
+### 実行結果
 
 このコードの実行結果は次のとおりです。
 
 ```log
 // Logs
-// observerA: 0 // 最初の注目点
-// observerA: 1
-// observerA: 2
-// observerB: 2 // 2つ目の注目点
-// observerA: 3
-// observerB: 3
+observerA: 0 // 最初の注目点
+observerA: 1
+observerA: 2
+observerB: 2 // 2つ目の注目点
+observerA: 3
+observerB: 3
 ```
 
 **最初の注目点**
 最初に注目したいのは `observerA: 0` の出力です。
-[subject の 三番目のブロック](#三番目のブロック) の補足では次のように記載しました。
+前回記事 [[RxJS] RxJS の学習メモ-Subject の 三番目のブロック](https://qiita.com/ksh-fthr/items/54b19b4160505e2fddd9#%E4%B8%89%E7%95%AA%E7%9B%AE%E3%81%AE%E3%83%96%E3%83%AD%E3%83%83%E3%82%AF) の補足では次のように記載しました。
 
 >
 > **補足:**
@@ -397,16 +133,21 @@ subject.next(3);
 
 これに対して、`BehaviorSubject` を使ったこのサンプルコードでは
 
-> ```typescript
-> const subject = new BehaviorSubject(0); // 0 is the initial value
-> 
-> // この時点で subject を初期化した値である `0` が出力される
-> subject.subscribe({
->   next: (v) => console.log(`observerA: ${v}`),
-> });
-> ```
+```typescript
+// (1) 最初のブロック
+// 初期値として 0 を設定, ここで設定した `0` はこの直後の `subscribe` で購読される
+const subject = new BehaviorSubject(0);
+
+// (2) 二番目のブロック
+// この時点で subject を初期化した値である `0` が出力される
+subject.subscribe({
+  next: (v) => console.log(`observerA: ${v}`),
+});
+```
 
 と、 `subscribe` の前に変数宣言と同時に生成している `new BehaviorSubject(0)` で指定された `0` が購読されています。
+この違いが大きなポイントです。
+すなわち **BehaviorSubjectから「現在の値」を受け取る** ことがこのコードから確認できました。
 
 **二番目の注目点**
 次に注目したいのは `observerB: 2` の出力です。
@@ -424,8 +165,11 @@ subject.subscribe({
 で処理されたものですが、出力された値が `observerA: 2` と同じ値であることがポイントです。
 コメントにも記載してありますように、直前の `subject.next(2)` で流れた値が購読されていることが分かります。
 
+最初の注目点とあわせて **BehaviorSubjectから「現在の値」を受け取る** ことを確認できるコードです。
+
 **冒頭で注目した内容を振り返る**
-ここで上に挙げた 2つ のポイントから、本項目の冒頭で注目した
+以上、サンプルコードから `BehaviorSubject` の動きを見てきました。
+ここでもう一度本項目の冒頭で注目した部分を挙げておきます。
 
 :::note info
 
@@ -433,15 +177,9 @@ subject.subscribe({
 
 :::
 
-の示す動きを振り返りますと、次の 3点 にまとめられます。
+`BehaviorSubject` を使うことで **直前に配信された値** イコール **現在の値** を、**ストリーム配信前に `subscribe`` しておかなくとも購読できる** ことが分かりました。
 
-- `new BehaviorSubject(0)` と `subject.next(2)` の部分で `subject` には `0` と `2` がストリームとして保持されている
-- 最初の `subject.subscribe()` では `new BehaviorSubject(0)` で保持されている `0` を購読して `observerA: 0` が出力された
-- 2つ目の `subject.subscribe()` では `subject.next(2)` で保持されている `2` を購読して `observerB:2` が出力された
-
-以上、サンプルコードから `BehaviorSubject` の動きが理解できました。
-
-# [ReplaySubject](https://rxjs.dev/guide/subject#replaysubject "Link to this heading")
+# [ReplaySubject](https://rxjs.dev/guide/subject#replaysubject)
 
 `ReplaySubject` についての説明を上記リンクから転載します。
 
@@ -459,44 +197,211 @@ subject.subscribe({
 
 次のサンプルコードで挙動を確認します。
 
+## ReplaySubject の動きを確認する
+
 ```typescript
 import { ReplaySubject } from 'rxjs';
 
+// (1) 最初のブロック
 // 3回分 の繰り返し用バッファを用意
-const subject = new ReplaySubject(3); // buffer 3 values for new subscribers
+// subscribe 前に配信されたストリームは ここで用意したバッファ分 保持され、subscribe で購読される
+const subject = new ReplaySubject(3);
 
-// ストリームが流れる前の購読ではバッファ有無に関係なく 後述の next(1)~next(4) まで流れる
+// (2) 二番目のブロック
+// subscribe 前に 4回 ストリームを配信して動きを確認する
+// 用意したバッファは 3つ なので購読されるのは next(2)~next(3) の 3つ
+// next(1) はバッファからあぶれるので購読されない
+subject.next(1); // 購読されない
+subject.next(2); // 購読される
+subject.next(3); // 購読される
+subject.next(4); // 購読される
+
+// (3) 三番目のブロック
+// subscribe 前のストリームは 3回分 購読する
+// subscribe 後のストリームはバッファの回数に関係なく新しい subscribe が用意されるまで延々と購読する
 subject.subscribe({
   next: (v) => console.log(`observerA: ${v}`),
 });
+console.log('---');
 
-subject.next(1);
-subject.next(2);
-subject.next(3);
-subject.next(4);
+// (4) 四番目のブロック
+// 4回、新しくストリームを流す. このとき observerA と observerB で購読するものが異なる
+// observerA
+//   5, 6, 7, 8 と購読している. これは observerA の subscribe 後に配信されたストリームであることが理由
+//   つまり observerA では subscribe 後に配信されたストリームはバッファの有無に関係なく順次購読している
+// observerB
+//   6, 7, 8 と購読している. これは observerB の subscribe 前に配信されたストリームであることが理由
+//   つまり 最初のブロックで指定した 3回分のバッファ が効いている.
+//   直前の 3回分 のストリームがバッファとして残っていて、それを購読しているのが observerB の挙動となる
+subject.next(5);
+subject.next(6);
+subject.next(7);
+subject.next(8);
+console.log('---');
 
-// ストリームが流れたあとの購読では next(2)~next(3) の 3回分 流れる
+// (5) 五番目のブロック
+// ストリームが流れた後の購読では next(6), next(7), next(8) の 3回分 流れる
+// ( 繰り返しになるが、3回分のバッファをここで購読している )
 subject.subscribe({
   next: (v) => console.log(`observerB: ${v}`),
 });
+console.log('---');
 
-// 購読が終わったあとにストリームを流す
-// バッファは 3回分 用意しているが、ここでは 1回 しかストリームが流れないのでログも next(5) だけが流れる
-subject.next(5);
+// (6) 六番目のブロック
+// subscribe 後のストリーム配信の動きを確認する.
+// ここ以降はストリームが配信されるたびに observerA, observerB で購読される.
+// 今回は subject.next(9) の 1回 しかストリームが流れないのでログも next(9) だけが流れるが、next(10), nextt(11)... とすれば
+// その分 observerA, observerB にストリームが配信され購読される.
+// ( これは新しく subscribe が行われるまで続く )
+subject.next(9);
 
-// Logs:
-// observerA: 1
-// observerA: 2
-// observerA: 3
-// observerA: 4
-// observerB: 2
-// observerB: 3
-// observerB: 4
-// observerA: 5
-// observerB: 5
+// このコメントアウトを外すと obeserverA, observerB には next(9)~next(14) の配信が購読される
+// そして observerC には next(12), next(13), next(14) が購読される
+// subject.next(10);
+// subject.next(11);
+// subject.next(12);
+// subject.next(13);
+// subject.next(14);
+// console.log('---');
+
+// subject.subscribe({
+//   next: (v) => console.log(`observerC: ${v}`),
+// });
 ```
 
-# [AsyncSubject](https://rxjs.dev/guide/subject#asyncsubject "Link to this heading")
+### 各ブロックの説明
+
+要点を実行結果のログで見ていきたいので、各ブロックの説明はコード中のコメントをご確認ください。
+
+### 実行結果(1)
+
+このコードの実行結果は次のとおりです。
+実行結果を細かく見ていくことでコードで実装されている内容がどういうものか、冒頭の `ReplaySubject` の説明は何を言っているのかを理解したいと思います。
+
+```log
+// Logs:
+observerA: 2 // 最初の注目点
+observerA: 3
+observerA: 4
+---
+observerA: 5 // 二番目の注目点
+observerA: 6
+observerA: 7
+observerA: 8
+---
+observerB: 6 // 三番目の注目点
+observerB: 7
+observerB: 8
+---
+observerA: 9 // 四番目の注目点
+observerB: 9
+```
+
+**最初の注目点**
+
+`observerA` の購読において `next(1)` で配信されたストリームが購読されていないことがログから分かります。
+これは
+
+```typescript
+// (1) 最初のブロック
+// 3回分 の繰り返し用バッファを用意
+// subscribe 前に配信されたストリームは ここで用意したバッファ分 保持され、subscribe で購読される
+const subject = new ReplaySubject(3);
+```
+
+で用意した バッファ が効いていることの証明です。
+つまり、コードコメントにある
+
+> subscribe 前に配信されたストリームは ここで用意したバッファ分 保持され、subscribe で購読される
+
+ことをこのログでは示しています。
+
+**二番目の注目点**
+
+バッファの有無に関係なく `next(5)~next(8)` が購読されています。
+これは `subscribe` 後に配信されたストリームについては **用意されたバッファに関係なく購読される** ことを示しています。
+
+`ReplaySubject` を使うと用意したバッファ分しか読み込まれないのではなく、通常の `subject` 的な動きもすることに注目です。
+`ReplaySubject` を使った購読の場合、
+
+- `subscribe` **前** に配信されたストリーム
+  - 用意したバッファ分を最大回数として購読する
+- `subscribe` **後** に配信されたストリーム
+  - 用意したバッファに関係なく配信されたストリームを購読する
+  - 通常の `subject` と同じ動きをする
+
+と捉えておきます。
+
+**三番目の注目点**
+
+`observerB` の購読において `next(5)` で配信されたストリームが購読されていないことがログから分かります。
+これは **最初の注目点** で確認したのと同じ動きです。ここの動きからも用意した バッファ が効いていることが分かります。
+
+前掲の **二番目の注目点** と関係しますが、`next(5)~next(8)` で配信されたストリームの購読の仕方が `observerA` と `observerB` で異なることに充分注意してください。
+
+- `observerA`
+  - `subscribe` **後** に配信されたストリームなのでバッファに関係なく配信されたストリームをすべて購読している
+  - なので `observerA` では `next(5)~next(8)` の値がログに出ている
+- `observerB`
+  - `subscribe` **前** に配信されたストリームなのでバッファ分だけ配信されたストリームを購読している
+  - なので `observerB` では `next(6)~next(8)` の値しかログに出ていない( `next(5)` は購読されていない )
+
+**四番目の注目点**
+
+`observerA`, `observerB` ともに `subscribe` 後の配信なので、バッファの有無に関係なく両方で購読されていることが分かります。
+
+**冒頭の説明を振り返る**
+以上、サンプルコードから `ReplaySubject` の動きを見てきました。
+ここでもう一度本項目の冒頭で注目した部分を挙げておきます。
+
+:::note info
+
+> ReplaySubjectは、古い値を新しい購読者に送ることができるという点ではBehaviorSubjectと似ていますが、Observableの実行の一部を記録することもできます。  
+>
+>> ReplaySubjectは、Observableの実行から複数の値を記録し、新しいSubscriberに再生することができます。
+
+:::
+
+`ReplaySubject` を使うことで **直前に配信された値** を指定回数記録し、それを **新しい subscribe で購読できる** ことが分かりました。
+
+### おまけ(実行結果(2))
+
+コメントアウト部分を外したときの実行結果も載せておきます。
+実行結果についての説明はコード中のコメントをご参照ください。
+
+```log
+observerA: 2
+observerA: 3
+observerA: 4
+---
+observerA: 5
+observerA: 6
+observerA: 7
+observerA: 8
+---
+observerB: 6
+observerB: 7
+observerB: 8
+---
+observerA: 9
+observerB: 9
+observerA: 10
+observerB: 10
+observerA: 11
+observerB: 11
+observerA: 12
+observerB: 12
+observerA: 13
+observerB: 13
+observerA: 14
+observerB: 14
+---
+observerC: 12
+observerC: 13
+observerC: 14
+```
+
+# [AsyncSubject](https://rxjs.dev/guide/subject#asyncsubject)
 
 `AsyncSubject` についての説明を上記リンクから転載します。
 
@@ -511,39 +416,80 @@ subject.next(5);
 
 サンプルコードで挙動を確認します。
 
+## AsyncSubject の動きを確認する
+
 ```typescript
 import { AsyncSubject } from 'rxjs';
+
+// 最初のブロック
 const subject = new AsyncSubject();
 
+// 二番目のブロック
 // AsyncSubject では最後に発信されたストリームだけが流れてくるので `next(5)` の値だけが出力される
 subject.subscribe({
   next: (v) => console.log(`observerA: ${v}`),
 });
 
+// 三番目のブロック
 subject.next(1); // ストリームが流れない
 subject.next(2); // 同上
 subject.next(3); // 同上
 subject.next(4); // 同上
 
+// 四番目のブロック
 // 最初の購読と同じく、こちらも `next(5)` の値だけが出力される
 subject.subscribe({
   next: (v) => console.log(`observerB: ${v}`),
 });
 
+// 五番目のブロック
 subject.next(5);
 
+// 六番目のブロック
 // ここをコメントアウトすると subscribe にストリームが流れない
 subject.complete();
-
-// Logs:
-// observerA: 5
-// observerB: 5
 ```
 
-※ 補足
-重要なポイントが  `complete()` の存在です。
-`AsyncSubject` では `subscribe` にストリームが流れるために `complete` による通知が必要です。
+### 各ブロックの説明
+
+要点を実行結果のログで見ていきたいので、各ブロックの説明はコード中のコメントをご確認ください。
+
+### 実行結果
+
+このコードの実行結果は次のとおりです。
+
+```log
+// Logs:
+observerA: 5
+observerB: 5
+```
+
+**`AsyncSubject` におけるポイント**
+**出力されたストリームが `next(5)` の値だけ** であることが重要なポイントです。
+コード中のコメントにも記載してありますが、 `AsyncSubject` では **最後に発信されたストリームだけが流れてくる** ので、このサンプルコードでは `next(5)` の配信だけが購読されました。
+
+またもう一つ重要なポイントが  `complete()` の存在です。
+`AsyncSubject` では `subscribe` にストリームが流れるために **`complete` による通知が必要** です。
 上記コードで `subject.complete()` をコメントアウトすると `subscribe` にストリームが流れません。
+
+**冒頭の説明を振り返る**
+以上、サンプルコードから `AsyncSubject` の動きを見てきました。
+ここでもう一度本項目の冒頭で注目した部分を挙げておきます。
+
+:::note info
+
+> AsyncSubjectは、Observableの実行の最後の値だけが、実行が完了したときだけ、そのオブザーバーに送信される変種である。
+
+:::
+
+`AsyncSubject` では `complete()` を使うことで **最後に配信されたストリームだけを購読する** ことが分かりました。
+
+# まとめにかえて
+
+[`Subject`](https://rxjs.dev/guide/subject#subject) の派生である [`BehaviorSubject`](https://rxjs.dev/guide/subject#behaviorsubject), [`ReplaySubject`](https://rxjs.dev/guide/subject#replaysubject), [`AsyncSubject`](https://rxjs.dev/guide/subject#asyncsubject) について、[こちらの記事](https://qiita.com/ksh-fthr/items/54b19b4160505e2fddd9) と本記事の 2回 に分けて見てきました。
+経験上、`subject` と `BehaviorSubject` を使う機会、見る機会が多く、他 2つ についてはほとんど扱う機会がなかったのですが、今回の記事はそれらを知る・学習するよい機会になりました。
+
+記事の内容に不備や誤りがありましたらお知らせください。
 
 # 参考
 
