@@ -75,14 +75,14 @@ RxJS を使っていく上で行った学習の備忘録になります。主に
 
 # この記事でやること
 
-## `Observables` と `Observer` について触れてみる
+## `Observable` と `Observer` について触れてみる
 
-本記事では `Observables` と `Observer` について触れます。
+本記事では `Observable` と `Observer` について触れます。
 この 2つ は RxJS の基本コンセプトである 6つ のコンセプトに含まれるものです。
 
 ## RxJS の基本コンセプト
 
-RxJS の基本コンセプトは `Observables`, `Observer`, `Subscription`, `Operators`, `Subjects`, `Schedulers` の 6つ があります。
+RxJS の基本コンセプトは `Observable`, `Observer`, `Subscription`, `Operators`, `Subject`, `Schedulers` の 6つ があります。
 これは公式のドキュメントにも [Overview](https://rxjs.dev/guide/overview) に下記のとおり記載されています。
 ( 太字については本記事にて加工しました )
 
@@ -110,7 +110,7 @@ RxJS の基本コンセプトは `Observables`, `Observer`, `Subscription`, `Ope
 
 :::
 
-前置きが長くなりました。では実際に `Observables` と `Observer` を見ていきます。
+前置きが長くなりました。では実際に `Observable` と `Observer` を見ていきます。
 
 # [Observer](https://rxjs.dev/guide/observer)
 
@@ -134,8 +134,6 @@ const observer = {
 ```
 
 :::
-
-## Observer のできること
 
 [前掲のコンセプト](#rxjs-の基本コンセプト) での説明や上記の説明文から次のように理解しておきます。
 
@@ -163,7 +161,7 @@ const observer = {
 
 :::
 
-# [Observable](https://rxjs.dev/guide/observer)
+# [Observable](https://rxjs.dev/guide/observable)
 
 今度は `Observable` です。上記リンクには次の記述があります。
 
@@ -177,10 +175,9 @@ const observer = {
 
 :::
 
-[前掲のコンセプト](#rxjs-の基本コンセプト) での説明や上記の説明をみてもなにを言っているか分かりません。
-つきましては、こちらはサンプルコードを見て理解を試みます。
+これら [Observer](https://rxjs.dev/guide/observer) と [Observable](https://rxjs.dev/guide/observer) の説明に対する理解をサンプルコードによって深めていきます。
 
-## サンプルコード
+# Observer と Observable の動きを確認する
 
 こちらのサンプルコードは [公式のサンプルコード](https://rxjs.dev/guide/observer#observer) のベースにしたものです。
 コード中のコメントや変数、`subscribe` のコールバック処理の記法等はこちらで変更・追加しています。
@@ -229,7 +226,7 @@ console.log('just after subscribe');
 
 ではサンプルコードで何を行っているかを見ていきます。
 
-### 最初のブロック
+## 最初のブロック
 
 ```typescript
 // 最初のブロック
@@ -263,7 +260,7 @@ const observer = new Observable((subscriber) => {
 **(1-3) `next` によるストリーム配信を遅延実行する**
 `next(4)` はストリームが遅延配信されます。前述の `next(1)~next(4)` との対比で抑えておきます。
 
-### 二番目のブロック
+## 二番目のブロック
 
 ```typescript
 // 二番目のブロック
@@ -285,7 +282,7 @@ console.log('just before subscribe');
 
 **`Observable` は **subscribe** されることでストリームが購読される** ので、サンプルコードの処理ではまず最初にこのログが出力されます。
 
-### 三番目のブロック
+## 三番目のブロック
 
 ```typescript
 // 三番目のブロック
@@ -323,7 +320,7 @@ observer.subscribe({
 2. error: エラー処理, エラー内容をログ出力する
 3. complete: 完了処理( **complete** が実行されるとこのハンドラが実行される), `done` をログ出力する
 
-### 四番目のブロック
+## 四番目のブロック
 
 ```typescript
 // 四番目のブロック
@@ -345,7 +342,7 @@ console.log('just after subscribe');
   }, 1000);
 ```
 
-### 実行結果
+## 実行結果
 
 このコードの実行結果は次のとおりです。
 
@@ -373,7 +370,7 @@ console.log('just after subscribe');
 
 サンプルコードの `next(1)` ~ `nex(4)` の間に `subscriber.error()` や `subscriber.complete()` を入れるとログの出方が変わります。
 
-## サンプルコード( error を間に挟む )
+## error が通知されたときの動きを確認する
 
 ```typescript
 import { Observable } from 'rxjs';
@@ -421,7 +418,7 @@ console.log('just after subscribe');
 `next(3)` の後に `subscriber.error('happening!');` を挟んだ例です。
 エラー処理によって処理が中断され、 `just after subscribe` の後に実行されるはずだった遅延処理が実行されませんでした。
 
-## サンプルコード( complete を間に挟む )
+## complete が通知されたときの動きを確認する
 
 ```typescript
 import { Observable } from 'rxjs';

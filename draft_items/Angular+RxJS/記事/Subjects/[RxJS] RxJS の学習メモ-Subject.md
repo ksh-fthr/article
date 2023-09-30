@@ -29,14 +29,14 @@ RxJS を使っていく上で行った学習の備忘録になります。主に
 
 # この記事でやること
 
-## [`Subjects`](https://rxjs.dev/guide/subject) について触れてみる
+## [`Subject`](https://rxjs.dev/guide/subject) について触れてみる
 
-本記事では `Subjects` について触れます。
-`Subjects` は RxJS の基本コンセプトである 6つ のコンセプトに含まれるものです。
+本記事では `Subject` について触れます。
+`Subject` は RxJS の基本コンセプトである 6つ のコンセプトに含まれるものです。
 
 ## RxJS の基本コンセプト
 
-RxJS の基本コンセプトは `Observables`, `Observer`, `Subscription`, `Operators`, `Subjects`, `Schedulers` の 6つ があります。
+RxJS の基本コンセプトは `Observable`, `Observer`, `Subscription`, `Operators`, `Subject`, `Schedulers` の 6つ があります。
 これは公式のドキュメントにも [Overview](https://rxjs.dev/guide/overview) に下記のとおり記載されています。
 ( 太字については本記事にて加工しました )
 
@@ -64,11 +64,11 @@ RxJS の基本コンセプトは `Observables`, `Observer`, `Subscription`, `Ope
 
 :::
 
-前置きが長くなりましが、これから実際に `Subjects` を見ていきます。
+前置きが長くなりましが、これから実際に `Subject` を見ていきます。
 
 # [Subject](https://rxjs.dev/guide/subject)
 
-とはいうものの、 [`Subjects`](https://rxjs.dev/guide/subject) のページをみますと `Subject` と、その派生である `BehaviorSubject`, `ReplaySubject`, `AsyncSubject` が紹介されています。
+とはいうものの、 [`Subject`](https://rxjs.dev/guide/subject) のページをみますと `Subject` と、その派生である `BehaviorSubject`, `ReplaySubject`, `AsyncSubject` が紹介されています。
 それらをすべて扱うのはかなり重たいので、本記事ではベースとなる [`Subject`](https://rxjs.dev/guide/subject#subject) を扱おうと思います。
 そして `Subject` とは何かをまとめると下記になります。
 
@@ -94,7 +94,7 @@ RxJS の基本コンセプトは `Observables`, `Observer`, `Subscription`, `Ope
 
 以降の項目で `Subject` の動きを見ていきます。
 
-## サンプルコード-1
+## Observer と Observable 両方の性質をもつことを確認する
 
 このサンプルコードでは次の 2点 を確認します。
 
@@ -261,7 +261,7 @@ console.log('just after subscribe');
 > - `Subject` ≒ `Observable`
 > - `Subject` は `Observable` と `Observer` の両方の性質をもつ
 
-## サンプルコード-2
+## マルチキャストとユニキャストの動きを確認する
 
 では次に、下記についてサンプルコードを交えて確認していきます。
 
@@ -277,7 +277,7 @@ console.log('just after subscribe');
 > - ユニキャスト
 >   - 購読している `Observer` がそれぞれ `Observable` の独立した実行を所有する
 
-### `Subject` のサンプルコード
+### マルチキャストの動きを確認する( `Subject` )
 
 まずは **マルチキャスト** である `Subject` のサンプルコードです。
 
@@ -320,7 +320,7 @@ subject.next(3);
 
 ということがログから分かります。
 
-### `Observer` のサンプルコード
+### ユニキャストの動きを確認する( `Observer` )
 
 次に **ユニキャスト** である `Observer` のサンプルコードです。
 
