@@ -185,7 +185,7 @@ subject.subscribe({
 
 :::
 
-`BehaviorSubject` を使うことで **直前に配信された値** イコール **現在の値** を、**ストリーム配信前に `subscribe`` しておかなくとも購読できる** ことが分かりました。
+`BehaviorSubject` を使うことで **直前に配信された値** イコール **現在の値** を、**ストリーム配信前に `subscribe` しておかなくとも購読できる** ことが分かりました。
 
 # [ReplaySubject](https://rxjs.dev/guide/subject#replaysubject)
 
