@@ -40,7 +40,6 @@
 
 ## [Operators](https://rxjs.dev/guide/operators) について触れてみる
 
-本記事では `Operators` について触れます。
 `Operators` は RxJS の基本コンセプトである 6つ のコンセプトに含まれるものです。
 
 ## RxJS の基本コンセプト
@@ -76,6 +75,8 @@ RxJS の基本コンセプトは `Observable`, `Observer`, `Subscription`, `Oper
 前置きが長くなりました。
 これから実際に `Operators` を見ていこうと思うのですが、`Operetors` は [こちら](https://rxjs.dev/guide/operators#categories-of-operators) で示されているように多くのオペレータがあります。
 そのすべてを扱うことは量的に難しいので、本記事ではそのなかでも特によく使うことになる、もしくは知っておくと便利だと思われる次のオペレータについて触れていきます。
+
+**本記事で扱うオペレータ**
 
 - `subscribe` する前に各オペレータを繋ぐ役割をもつ [`pipe`](https://rxjs.dev/guide/operators#piping)
 - ストリームに対してフィルタリングをしてくれる [`Filtering Operators`](https://rxjs.dev/guide/operators#filtering-operators)
@@ -137,10 +138,10 @@ const streamData$ = of('streamData');
 ここでは [`BehaviorSubject`](https://rxjs.dev/guide/subject#behaviorsubject) のオブジェクト `receiver$` と [`Observable`](https://rxjs.dev/guide/observable) ののオブジェクト `streamData$` を生成します。
 それぞれの役割は次のとおりです。
 
-- receiver$
+- `receiver$`
   - 流れてきたストリームを購読してログ出力するだけ
   - 初期化時と `streamData$` の購読時の 2回、ストリームが流れる
-- streamData$
+- `streamData$`
   - 生成したストリームは 三番目のブロック で `pipe` によって `subscribe` 前に加工される
   - 加工されたデータは `subscribe` によって購読され、`receiver$` に新しいストリームとして流される
 
@@ -530,7 +531,7 @@ receiver=同じ
 つまり、ストリーム上では 3つ目 の「同じ」は前のストリームとは異なります。にも関わらず、**前後で違うものは出力しない** に従い 3つ目 の「同じ」が出力されています。
 これは次の動きとなっていることを示しています。
 
-:::info
+:::note info
 `distinctUntilChanged` で `comparator` を指定した場合、`comparator` の 第一引数である `prev` には **前回処理時に後続のストリームに流れた値が保持されている**
 :::
 
@@ -629,7 +630,7 @@ Angular では Http クライアントの実装で [HttpClientModule](https://an
 
 ( 転載もと: [HttpClient のメソッドはひとつの値を返す](https://angular.jp/tutorial/tour-of-heroes/toh-pt6#httpclient%E3%81%AE%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%E3%81%AF%E3%81%B2%E3%81%A8%E3%81%A4%E3%81%AE%E5%80%A4%E3%82%92%E8%BF%94%E3%81%99) )
 
-:::info
+:::note info
 
 ( 太字については本記事にて加工しました )
 
