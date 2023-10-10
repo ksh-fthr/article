@@ -1,7 +1,6 @@
 # はじめに
 
-本記事は [[RxJS] RxJS の学習メモ-Observable と Observer](https://qiita.com/ksh-fthr/items/2933492929bbeccece50) の続きです。
-RxJS を使っていく上で行った学習の備忘録になります。主に次に挙げた内容を目的とします。
+本記事は RxJS を使っていく上で行った学習の備忘録になります。主に次に挙げた内容を目的とします。
 
 :::note info
 
@@ -14,6 +13,14 @@ RxJS を使っていく上で行った学習の備忘録になります。主に
   - 正しい、最適だと思っていたものが実は間違っていたことも充分あり得るので、その辺が是正できれば御の字
 
 :::
+
+# これまでと今回
+
+これまでに次の記事を投稿してまいりました。
+
+- [[RxJS] RxJS の学習メモ-Observable と Observer](https://qiita.com/ksh-fthr/items/2933492929bbeccece50)
+
+今回は [Subject](https://rxjs.dev/guide/subject) について学びます。
 
 # 環境
 
@@ -29,7 +36,7 @@ RxJS を使っていく上で行った学習の備忘録になります。主に
 
 # この記事でやること
 
-## [`Subject`](https://rxjs.dev/guide/subject) について触れてみる
+## [Subject](https://rxjs.dev/guide/subject) について触れてみる
 
 本記事では `Subject` について触れます。
 `Subject` は RxJS の基本コンセプトである 6つ のコンセプトに含まれるものです。

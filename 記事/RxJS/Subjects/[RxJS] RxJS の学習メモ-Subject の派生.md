@@ -1,7 +1,6 @@
 # はじめに
 
-本記事は [[RxJS] RxJS の学習メモ-Subject](https://qiita.com/ksh-fthr/items/54b19b4160505e2fddd9) の続きです。
-RxJS を使っていく上で行った学習の備忘録になります。主に次に挙げた内容を目的とします。
+本記事は RxJS を使っていく上で行った学習の備忘録になります。主に次に挙げた内容を目的とします。
 
 :::note info
 
@@ -14,6 +13,15 @@ RxJS を使っていく上で行った学習の備忘録になります。主に
   - 正しい、最適だと思っていたものが実は間違っていたことも充分あり得るので、その辺が是正できれば御の字
 
 :::
+
+# これまでと今回
+
+これまでに次の記事を投稿してまいりました。
+
+- [[RxJS] RxJS の学習メモ-Observable と Observer](https://qiita.com/ksh-fthr/items/2933492929bbeccece50)
+- [[RxJS] RxJS の学習メモ-Subject](https://qiita.com/ksh-fthr/items/54b19b4160505e2fddd9)
+
+前回に引き続き、今回も [Subject](https://rxjs.dev/guide/subject) について学びます。
 
 # 環境
 
@@ -29,7 +37,7 @@ RxJS を使っていく上で行った学習の備忘録になります。主に
 
 # この記事でやること
 
-## `Subject` の派生について触れてみる
+## Subject の派生について触れてみる
 
 [`Subject`](https://rxjs.dev/guide/subject#subject) の派生である [`BehaviorSubject`](https://rxjs.dev/guide/subject#behaviorsubject), [`ReplaySubject`](https://rxjs.dev/guide/subject#replaysubject), [`AsyncSubject`](https://rxjs.dev/guide/subject#asyncsubject) について触れたいと思います。
 
@@ -466,7 +474,7 @@ observerB: 5
 
 **`AsyncSubject` におけるポイント**
 **出力されたストリームが `next(5)` の値だけ** であることが重要なポイントです。
-コード中のコメントにも記載してありますが、 `AsyncSubject` では **最後に発信されたストリームだけが流れてくる** ので、このサンプルコードでは `next(5)` の配信だけが購読されました。
+コード中のコメントにも記載してありますが、 `AsyncSubject` では **最後に発信されたストリームだけが流れてくる** ので、このサンプルコードでは **`next(5)` の配信だけが購読** されました。
 
 またもう一つ重要なポイントが  `complete()` の存在です。
 `AsyncSubject` では `subscribe` にストリームが流れるために **`complete` による通知が必要** です。
