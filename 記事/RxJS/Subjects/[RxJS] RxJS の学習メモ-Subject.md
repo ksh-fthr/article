@@ -71,7 +71,7 @@ RxJS の基本コンセプトは `Observable`, `Observer`, `Subscription`, `Oper
 
 :::
 
-前置きが長くなりましが、これから実際に `Subject` を見ていきます。
+前置きが長くなりましたが、これから実際に `Subject` を見ていきます。
 
 # [Subject](https://rxjs.dev/guide/subject)
 
