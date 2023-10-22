@@ -21,7 +21,7 @@
 - [[RxJS] RxJS の学習メモ-Observable と Observer](https://qiita.com/ksh-fthr/items/2933492929bbeccece50)
 - [[RxJS] RxJS の学習メモ-Subject](https://qiita.com/ksh-fthr/items/54b19b4160505e2fddd9)
 - [[RxJS] RxJS の学習メモ-Subject の派生](https://qiita.com/ksh-fthr/items/6c6cb89acce6fe756c60)
-- [[RxJS] RxJS の学習メモ-Operator(1)-PipeとFilteringOperators](https://qiita.com/ksh-fthr/items/0f34da2cc38311ecf9c6)
+- [[RxJS] RxJS の学習メモ-Operator(1)-PipeとFiltering](https://qiita.com/ksh-fthr/items/0f34da2cc38311ecf9c6)
 
 今回は [Operators](https://rxjs.dev/guide/operators) についての続きです。
 
@@ -420,7 +420,7 @@ receiver=tap で返却した値 + map で加工した値
 ```typescript
 import { of, take, toArray } from 'rxjs';
 
-const stream$ = of('one', 'two', 'three', 'foure', 'five');
+const stream$ = of('one', 'two', 'three', 'four', 'five');
 const streamObserver = stream$.pipe(
   // take はストリームから流れてくる値のうち、指定した数( 回数 )だけ処理するフィルタ
   // 指定回数分処理すると complete イベントが発火する
@@ -435,22 +435,22 @@ streamObserver.subscribe({
 });
 
 // Logs:
-// ["one", "two", "three", "foure", …]
+// ["one", "two", "three", "four", …]
 // 0: "one"
 // 1: "two"
 // 2: "three"
-// 3: "foure"
+// 3: "four"
 // 4: "five"
 ```
 
-ログには `["one", "two", "three", "foure", 'five']` と出力されています｡
+ログには `["one", "two", "three", "four", 'five']` と出力されています｡
 このことから
 
 > `complete` が来るまでの `next` を Array に詰めた値として返す
 
 ことが確認できました｡
 
-なおこのサンプルコードでは `take(5)` で扱う回数を **5回** と指定したので 'one', 'two', 'three', 'foure', 'five' がセットされた配列が出力されました｡
+なおこのサンプルコードでは `take(5)` で扱う回数を **5回** と指定したので `one`, `two`, `three`, `four`, `five` がセットされた配列が出力されました｡
 `take(2)` を指定すれば `one`, `two` までがセットされた配列が出力されます｡
 
 :::note info
