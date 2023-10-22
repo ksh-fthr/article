@@ -467,6 +467,54 @@ console.log('just after subscribe');
 `complete` が途中で実行されたことで、配信が終了となりました。
 結果、`just after subscribe` の後に実行されるはずだった遅延処理が実行されませんでした。
 
+# `subscribe` における 正常時、エラー時、完了時の文法
+
+`subscribe` における 正常時、エラー時、完了時の文法についても触れておきます｡
+次の書き方は OK です｡
+
+```typescript
+hoge$.subscribe({
+  next: (response: any) => { // プロダクトで実装する際はちゃんと型定義しましょう
+    this.accounts = response;
+  },
+  error: (error: HttpErrorResponse) => {
+    alert(error.message);
+  },
+  complete: () => {
+    // do something when the observable completes
+    // まぁ、書かなくても良い( 本当はちゃんと決めておくのが行儀が良いとは思う )
+  }
+}
+```
+
+ですが､次の書き方は [非推奨](https://rxjs.dev/deprecations/subscribe-arguments#what-signature-is-affected) です｡
+
+```typescript
+hoge$.subscribe(
+  (response: any) => { // プロダクトで実装する際はちゃんと型定義しましょう
+    this.accounts = response;
+  },
+  (error: HttpErrorResponse) => {
+    alert(error.message);
+  },
+  () => {
+    // do something when the observable completes
+    // まぁ、書かなくても良い( 本当はちゃんと決めておくのが行儀が良いとは思う )
+  }
+)
+```
+
+この 非推奨の書き方 をすると下記が表示されます｡
+
+:::note warn
+The signature '(next?: (value: unknown) => void, error?: (error: any) => void, complete?: () => void): Subscription' of 'subject.subscribe' is deprecated.(6387)
+Observable.d.ts(51, 9): The declaration was marked as deprecated here.
+
+(method) Observable<unknown>.subscribe(next?: (value: unknown) => void, error?: (error: any) => void, complete?: () => void): Subscription (+1 overload)
+
+@deprecated — Instead of passing separate callback arguments, use an observer argument. Signatures taking separate callback arguments will be removed in v8. Details: https://rxjs.dev/deprecations/subscribe-arguments
+:::
+
 # まとめにかえて
 
 `Obseravable` と `Observer` について見ました。
