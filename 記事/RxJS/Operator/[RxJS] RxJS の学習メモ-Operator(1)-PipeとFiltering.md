@@ -672,5 +672,6 @@ Operators にはまだまだたくさんのオペータがあります。それ�
 - [RxJS Marbles](https://rxmarbles.com/)
 - [マーブル図で怖くない RxJS](https://www.slideshare.net/bitbankink/rxjs-159715695)
 - [RxJS を学ぼう #2 - よく使う ( と思う ) オペレータ 15 選](https://blog.recruit.co.jp/rmp/front-end/post-11475/)
+- [RxJS のオペレーターの動きをデモアプリを自作して確認してみた](<https://note.com/shift_tech/n/n7643a684e947#map()>)
 - [Angular-RxJS ライブラリ](https://angular.jp/guide/rx-library#rxjs-%E3%83%A9%E3%82%A4%E3%83%96%E3%83%A9%E3%83%AA)
 - [Angular のための RxJS](https://learn-rxjs-for-angular.info/)
