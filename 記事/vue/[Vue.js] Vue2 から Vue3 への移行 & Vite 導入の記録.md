@@ -33,7 +33,7 @@
 - https://github.com/buefy/buefy/issues/2505#issuecomment-997000720
 
 ## 移行手順
-[移行ビルド->インストール](https://v3.ja.vuejs.org/guide/migration/migration-build.html#%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB) に沿って作業します。
+[移行ビルド->インストール](https://v3-migration.vuejs.org/ja/migration-build.html#%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB) に沿って作業します。
 
 **この手順を実施しているときの `npm`, `node` のバージョンは次のとおりです。**
 
