@@ -272,7 +272,7 @@ function delayProcess$(index: number, sentence: string, delayTime: number): Obse
 
 動きをこのサンプルコードから確認できました。
 
-## [cancatMap](https://rxjs.dev/api/index/function/concatMap)
+## [concatMap](https://rxjs.dev/api/index/function/concatMap)
 
 :::note info
 **`concatMap` の特徴**
