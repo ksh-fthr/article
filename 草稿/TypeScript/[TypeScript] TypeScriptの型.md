@@ -1,9 +1,15 @@
+この記事は TypeScript Advent Calendar 2023 9日目の記事になります｡
+
+
+https://qiita.com/advent-calendar/2023/typescript
+
 # はじめに
 
 普段使っていて悩むことがままある TypeScript のアレコレ。
-`null | undefined` のチェックで使う各演算子や型づけ、`type` とか `keyof` とか 諸々。
+`null | undefined` のチェックで使う各演算子や型づけ、`type` とか `keyof` とか諸々です｡
 
-その辺を改めて見直すことで理解を深めます。
+本記事ではその辺を改めて見直すことで理解を深めます。
+
 
 # 確認環境
 
@@ -146,10 +152,11 @@ let hoge: (string | number)[];
 hoge[2] = true;  // NG, Type 'boolean' is not assignable to type 'string | number'.(2322) 
 ```
 
-<div class="alert alert-success">
-<i class="fa fa-info-circle"></i> <b>NOTE</b><br>
-先述しましたが、先に挙げた <a href="#型推論に任せる">タプルの <strong>型推論</strong> の例</a> は、この <strong>共用型の配列</strong> という解釈をされたことになります。
-</div>
+:::note info
+
+先に挙げた [タプルの **型推論** の例](#型推論に任せる) は、この **共用型の配列** という解釈をされたことになります。
+
+:::
 
 ## 交差型
 
@@ -341,11 +348,12 @@ console.log(hoge?.substring(1));  // OK, undefined が出る
 
 非常に見通しが良いです。
 
-<div class="alert alert-success">
-<i class="fa fa-info-circle"></i> <b>NOTE</b><br>
-<code>null</code> が設定されたときに <code>undefined</code> が返却されていることに注目です。<br>
-<strong><code>?.</code> 演算子を使ってアクセスした場合、<code>null | undefined</code> の場合は <code>undefined</code> が返ります。</strong>
-</div>
+:::note info
+
+`null` が設定されたときに `undefined` が返却されていることに注目です。<br>
+**`?.` 演算子を使ってアクセスすると、対象の変数が `null | undefined` の場合は `undefined` が返ります。**
+
+:::
 
 ちなみに `?.` 演算子を使わない場合は次のようになって見通しが悪いです。
 
@@ -442,17 +450,17 @@ console.log(hoge ? hoge : '初期値'); // OK, 初期値
 リンク先にはこうあります。
 
 > ```text
-> TypeScriptには、明示的なチェックを行わずに型からnullやundefinedを取り除くための特別な構文もある。
-> 式の後に「！」を書くと、その値がnullやundefinedではないという型宣言をすることになる：
+> Non-null Assertion Operator (Postfix !)
+>
+> TypeScript also has a special syntax for removing null and undefined from a type without doing any explicit checking. Writing ! after any expression is effectively a type assertion that the value isn’t null or undefined:
 > 
-> （サンプルコードは省略)
+> ( コードは省略)
 > 
-> トライ
-> 他の型アサーションと同様、これはコードの実行時の動作を変更するものではないので、
-> 値がnullやundefinedであってはならないことが分かっている場合にのみ!
+> Just like other type assertions, this doesn’t change the runtime behavior of your code, so it’s important to only use ! when you know that the value can’t be null or undefined.
+> 
 > ```
 
-コードで見てみると
+これをコードで見てみると
 
 ```typescript
 let hoge: string | null | undefined;
@@ -472,12 +480,14 @@ console.log(hoge!.substring(1));
 ```
 
 こんな感じになります。
+つまり
 
-<div class="alert alert-success">
-<i class="fa fa-info-circle"></i> <b>NOTE</b><br>
-つまり実際には <strong>その可能性があるのにもかかわらず</strong>、 <code>null</code> だろうが <code>undefined</code> だろうが <strong>気にせずに (警告を黙らせて) アクセス</strong> します。<br>
-<strong><code>null  | undefine</code>  ではないことを実装者がわかっている、かつ間違いがないことが確実な状態で使うものだ</strong> 、と理解するのが良いです。
-</div>
+:::note info
+
+実際には **その可能性があるのにもかかわらず**、 `null` だろうが `undefined` だろうが **気にせずに (警告を黙らせて) アクセス** します。<br>
+**`null  | undefine`  ではないことを実装者がわかっている、かつ間違いがないことが確実な状態で使うものだ**、と理解するのが良いです。
+
+:::
 
 # 型エイリアス
 
@@ -592,19 +602,18 @@ const tBoo: TBoo = {
 } as TBoo;
 ```
 
-<div class="alert alert-success">
-<i class="fa fa-info-circle"></i> <b>NOTE</b><br>
-<a href="https://typescript-jp.gitbook.io/deep-dive/type-system/type-assertion#asshonha">こちら</a> にもありますように型アサーションも無理やりコンパイラを黙らせる手段です。
+:::note info
+
+[こちら](https://typescript-jp.gitbook.io/deep-dive/type-system/type-assertion#asshonha) にも記載されているように､型アサーションも無理やりコンパイラを黙らせる手段です。
 できれば使わずにプログラミングすることを心がけたいですね。
 
-ところで型アサーションは <strong>キャスト</strong> とは明確に区別されるようです。
+ところで型アサーションは **キャスト** とは明確に区別されるようです。
 詳しくは下記をご参照ください。
 
-<ul>
-  <li><a href="https://typescript-jp.gitbook.io/deep-dive/type-system/type-assertion#asshontokyasuto">型アサーションとキャスト</a></li>
-  <li><a href="https://typescriptbook.jp/reference/values-types-variables/type-assertion-as#%E5%9E%8B%E3%82%A2%E3%82%B5%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%A8%E3%82%AD%E3%83%A3%E3%82%B9%E3%83%88%E3%81%AE%E9%81%95%E3%81%84">型アサーションとキャストの違い</a></li>
-</ul>
-</div>
+- [型アサーションとキャスト](https://typescript-jp.gitbook.io/deep-dive/type-system/type-assertion#asshontokyasuto)
+- [型アサーションとキャストの違い](https://typescriptbook.jp/reference/values-types-variables/type-assertion-as#%E5%9E%8B%E3%82%A2%E3%82%B5%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%A8%E3%82%AD%E3%83%A3%E3%82%B9%E3%83%88%E3%81%AE%E9%81%95%E3%81%84)
+
+:::
 
 # インデックスシグネチャ
 
@@ -1493,5 +1502,3 @@ const tcHoge3: TCHoge = [
   1,
 ];
 ```
-
-
