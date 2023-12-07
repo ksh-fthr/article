@@ -1062,8 +1062,7 @@ type TConditionNever = TBaseCondition<string | boolean | number, number[] | stri
 
 Conditional Types ( 条件型 ) を扱う際に用いるキーワードで、これを使うと型マッチングなるものが可能になるとのこと。
 型マッチングでなに？というところでコードで確認します。
-勉強不足に付きうまい例が浮かばなかったので、次のコードは TypeScript の `ReturnType` から拝借してます。
-( 参考: https://cloudsmith.co.jp/blog/frontend/typescript/2023/02/2293805.html )
+勉強不足に付きうまい例が浮かばなかったので、次のコードは TypeScript の `ReturnType` を参考にしてます。
 
 ```typescript
 type SampleReturnType<T> = T extends (...args: any[]) => infer T ? T : any;
@@ -1502,3 +1501,10 @@ const tcHoge3: TCHoge = [
   1,
 ];
 ```
+
+# 参考
+- [MDN Web Docs](https://developer.mozilla.org/ja/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [サバイバルTypeScript](https://typescriptbook.jp/)
+- [TypeScript Deep Dive 日本語版](https://typescript-jp.gitbook.io/deep-dive/)
+- [Typescriptの型レベルプログラミング](https://cloudsmith.co.jp/blog/frontend/typescript/2023/02/2293805.html)
