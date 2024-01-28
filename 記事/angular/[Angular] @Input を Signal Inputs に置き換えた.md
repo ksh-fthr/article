@@ -18,10 +18,9 @@ Angular v17.1 で **Signal Inputs** がリリースされました。
 
 今回の記事の内容は次の環境で実施したものです。
 
-
 | 環境                                                        | バージョン | 備考                     |
 | ----------------------------------------------------------- | ---------- | ------------------------ |
-| [Angular CLI](https://cli.angular.io/)                      | v17.1.0   | `ng version` で確認      |
+| [Angular CLI](https://cli.angular.io/)                      | v17.1.0    | `ng version` で確認      |
 | [Angular](https://angular.io/)                              | v17.1.0    | 同上                     |
 | [TypeScript](https://www.typescriptlang.org/)               | v5.3.3     | 同上                     |
 | [zone.js](https://www.npmjs.com/package/zone.js)            | v0.14.3    | 同上                     |
@@ -95,9 +94,7 @@ index d97c8bc..7394a23 100644
 
 ![スクリーンショット 2024-01-28 16.39.31.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/193342/6492bd81-7be7-5319-f092-5798279f7a4e.png)
 
-
 ![スクリーンショット 2024-01-28 17.08.44.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/193342/4037246f-95e7-89d4-2193-ec5ded09feef.png)
-
 
 ### 補足-`required` の指定
 
@@ -117,7 +114,6 @@ Argument needs to be an object literal that is statically analyzable.(-991010)
 
 ( こちらはキャプチャ )
 ![スクリーンショット 2024-01-28 16.30.06.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/193342/aa7d3273-1cbb-b511-4773-2cf4acd1cf19.png)
-
 
 ## 差分(`child.component.html`)
 
