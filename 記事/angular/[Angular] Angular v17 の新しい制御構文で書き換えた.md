@@ -3,6 +3,19 @@
 Angular v17 で新しい制御構文が導入されました｡
 本記事では既存の制御構文を新しい制御構文で書き換えてみます｡
 
+# 環境
+
+今回の記事の内容は次の環境で実施したものです。
+
+| 環境                                                        | バージョン | 備考                     |
+| ----------------------------------------------------------- | ---------- | ------------------------ |
+| [Angular CLI](https://cli.angular.io/)                      | v17.0.10   | `ng version` で確認      |
+| [Angular](https://angular.io/)                              | v17.0.9    | 同上                     |
+| [TypeScript](https://www.typescriptlang.org/)               | v5.2.2     | 同上                     |
+| [zone.js](https://www.npmjs.com/package/zone.js)            | v0.14.3    | 同上                     |
+| [Node.js](https://nodejs.org/ja/)                           | v18.19.0   | 同上                     |
+| [npm](https://www.npmjs.com/)                               | v10.2.3    | 同上                     |
+
 # 今回扱うソースコード
 
 対象のソースコードは私の学習リポジトリである [こちら](https://github.com/ksh-fthr/angular-work) になります｡
@@ -36,7 +49,6 @@ UPDATE src/app/component/use-angular-material/autocomplete/highlight-firs-item/h
 UPDATE src/app/component/use-angular-material/control-functions/control-functions.component.html (341 bytes)
 UPDATE src/app/component/tab/switch-tab/switch-tab.component.html (341 bytes)
 ```
-
 
 # 差分をみてみる
 
@@ -93,6 +105,7 @@ index 970a4a2..13c7231 100644
 もうひとつ差分を見てみます｡
 
 ### 対象ソースコード
+
 - [src/app/component/use-angular-material/autocomplete/highlight-firs-item/highlight-firs-item.component.html](https://github.com/ksh-fthr/angular-work/blob/develop/src/app/component/use-angular-material/autocomplete/highlight-firs-item/highlight-firs-item.component.html)
 
 ### 差分
@@ -149,7 +162,6 @@ index 5199bd5..1259022 100644
 
 最初のブロックの差分はフォーマッタによる差分です｡お恥ずかしながらフォーマット不正があったのですが､これもマイグレーションコマンドで修正してくれてます｡
 そしてこちらもポイントだけ抜き出します｡
-
 
 ```html:移行前のコード
 -      <mat-option *ngFor="let autocompleteItem of filteredAutocompleteItemList | async" [value]="autocompleteItem">
@@ -316,6 +328,7 @@ Build at: 2024-01-13T09:06:55.280Z - Hash: 4e74de41bdd101a3 - Time: 10534ms
 従いまして `CommonModule` を必要としているモジュールを除き､ `CommonModule` の import は手動で削除しています｡
 
 # 参考
+
 - [公式ドキュメント](https://angular.dev/overview)
   - [Built-in control flow](https://angular.dev/guide/templates/control-flow)
 - [チュートリアル](https://angular.dev/tutorials/learn-angular)
