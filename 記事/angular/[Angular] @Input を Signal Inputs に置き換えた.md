@@ -115,7 +115,7 @@ Argument needs to be an object literal that is statically analyzable.(-991010)
 ( こちらはキャプチャ )
 ![スクリーンショット 2024-01-28 16.30.06.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/193342/aa7d3273-1cbb-b511-4773-2cf4acd1cf19.png)
 
-## 差分(`child.component.html`)
+### 差分(`child.component.html`)
 
 ```html
 % git diff src/app/component/parent-child/child/child.component.html
