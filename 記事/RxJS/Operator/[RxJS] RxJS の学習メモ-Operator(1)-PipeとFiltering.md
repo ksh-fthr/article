@@ -135,7 +135,7 @@ const receiver$ = new BehaviorSubject<string>('初期値');
 const streamData$ = of('streamData');
 ```
 
-ここでは [`BehaviorSubject`](https://rxjs.dev/guide/subject#behaviorsubject) のオブジェクト `receiver$` と [`Observable`](https://rxjs.dev/guide/observable) ののオブジェクト `streamData$` を生成します。
+ここでは [`BehaviorSubject`](https://rxjs.dev/guide/subject#behaviorsubject) のオブジェクト `receiver$` と [`Observable`](https://rxjs.dev/guide/observable) のオブジェクト `streamData$` を生成します。
 それぞれの役割は次のとおりです。
 
 - `receiver$`
@@ -179,10 +179,13 @@ streamData$
 `streamData$` に対して `subescribe` で購読する前に `pipe` でストリームを加工しています。
 そして加工したストリームは `subscribe` によって購読されます。つまり、この処理では以下の動きとなります。
 
-1. `streamData$` のストリームはとして 文字列: `streamData` が流れてくる
-2. `pipe` ではその `streamData` と 文字列: `map で加工した` と `値が流れる` を、 `map` を経由することで、 **配列** として新しいストリームとして生成した
+1. `streamData$` のストリームとして 文字列: `streamData` が流れてくる
+2. `pipe` では `map` を経由することで 次の **3つ の文字列を 配列 の要素とした新しいストリーム** を生成した
+    - `1.` で流れてきた文字列: `streamData`
+    - 文字列: `map で加工した`
+    - 文字列: `値が流れる` 
 3. `subscribe` では `2` で生成された `string[]` のストリームを購読している
-4. 最後、購読した `string[]` の各要素を [テンプレートリテラル](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Template_literals) で連結して `receiver$` に対して `next` で流す
+4. 最後、購読した `string[]` の各要素を [テンプレートリテラル](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Template_literals) で連結し､ `receiver$` に対して `next` で流す
 
 このコードの実行結果が次項で示すログです。
 
@@ -312,7 +315,7 @@ receiver=3回目
 また `complete` がログに出ていないことにも注目です。
 これは `complete` が発火されなかったことを示しています。つまりストリームは活きている状態です。
 ストリームを終了させるには明示的に `complete` を実行する必要があります。
-サンプルコードの最後に `receiver$.complete()` を記述しますとログには `complete` が出力されます。ご興味あればお試しください。
+サンプルコードの最後に `receiver$.complete()` を記述するとログには `complete` が出力されます。ご興味あればお試しください。
 
 なお `subscribe` 中の `next` や `complete` については [こちらの記事](https://qiita.com/ksh-fthr/items/2933492929bbeccece50#%E4%B8%89%E7%95%AA%E7%9B%AE%E3%81%AE%E3%83%96%E3%83%AD%E3%83%83%E3%82%AF) でも触れております。
 ご興味あればそちらも合わせてご参照ください。
