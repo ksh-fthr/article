@@ -172,7 +172,7 @@ Warning: src/app/component/parent-child/child/child.component.html:12:37 - warni
 
 次は Directive の例です。
 
-## Directiv での置き換え
+## Directive での置き換え
 
 ### 対象ソースコード
 
