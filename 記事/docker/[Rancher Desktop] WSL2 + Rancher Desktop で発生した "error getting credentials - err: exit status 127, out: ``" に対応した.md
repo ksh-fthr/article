@@ -9,7 +9,7 @@
 | ---- | --------- | ---- |
 | Windows11 Home | 22H2 | |
 | WSL |  v2.0.9.0 | `wsl --version` で確認 |
-| Rancher Desktop | v1.11.1 | アプリのメニュー > Help > About Rancher Desktop で確認 |
+| Rancher Desktop | v1.11.1 | メニュー > Help > About Rancher Desktop で確認 |
 
 
 # 前提
