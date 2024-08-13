@@ -1,3 +1,7 @@
+# 更新 (2024/08/12)
+本稿の [起動確認](#起動確認) で扱っている [microphone-stream](https://www.npmjs.com/package/microphone-stream) のエラーを解決できましたので､対応について更新しました｡
+[microphone-streamを使えるように対応する](#microphone-streamを使えるように対応する) をご確認ください｡
+
 # はじめに
 
 Angular v18 がリリースされました。( [Angular v18 is now available!](https://blog.angular.dev/angular-v18-is-now-available-e79d5ac0affe) )
@@ -464,7 +468,7 @@ index c959573..8534952 100644
 ```
 </details>
 
-## 対応
+## microphone-streamを使えるように対応する
 
 とはいえ、今後は esbuild を使う `application` が標準になるとのことなので、angular.json を戻さずにできる方法が必要です。
 以下、自分なりに調べたこと・試したことです。
@@ -499,7 +503,14 @@ import MicrophoneStream from 'microphone-stream';
 ```
 
 エラーになることなく無事インストールできました。
-これで型定義の問題も解決したと思いましたが、今度は別のエラーが発生しました。
+
+以前はこれで下記のエラーが発生していたのですが､  **2024/08 現在､この対応でエラーは解決** しました｡ コミットログは [こちら](https://github.com/ksh-fthr/angular-work/pull/693/commits/3566554f793870aea9be2fa484bf7a28580158b6) をご参照ください｡
+手元の環境で動作確認したところ､音声認識からの文字起こしもできています｡
+
+<font color="lightgray">~~これで型定義の問題も解決したと思いましたが、今度は別のエラーが発生しました。~~</font>
+
+<details>
+<summary>2024/08現在このエラーはでていません</summary>
 
 ```bash
 ✘ [ERROR] TS2416: Property 'pipe' in type 'Duplex' is not assignable to the same property in base type '_Writable'.
@@ -514,12 +525,53 @@ import MicrophoneStream from 'microphone-stream';
       355 │         pipe<S extends _IWritable>(dest: S, pipeOpts?: { end?: bo...
           ╵         ~~~~
 ```
+</details>
 
-ここまでくると、ライブラリの中の話になるので追うのはやめました。
+<font color="lightgray">~~ここまでくると、ライブラリの中の話になるので追うのはやめました。~~</font>
 
-## 残念
+下記は 2024/08 時点での手元の環境です｡参考までに｡
 
-すぐの解決は難しいと判断し、今回は [該当するコンポーネントをコメントアウト](https://github.com/ksh-fthr/angular-work/pull/655/commits/6a704eaf51c5d5803b0ce38045d2bc8103ea640b) することで回避しました。
+<details>
+<summary>2024/08 時点での手元の環境</summary>
+
+```bash
+% ng version
+
+     _                      _                 ____ _     ___
+    / \   _ __   __ _ _   _| | __ _ _ __     / ___| |   |_ _|
+   / △ \ | '_ \ / _` | | | | |/ _` | '__|   | |   | |    | |
+  / ___ \| | | | (_| | |_| | | (_| | |      | |___| |___ | |
+ /_/   \_\_| |_|\__, |\__,_|_|\__,_|_|       \____|_____|___|
+                |___/
+    
+
+Angular CLI: 18.1.4
+Node: 20.14.0
+Package Manager: npm 10.7.0
+OS: darwin x64
+
+Angular: 18.1.4
+... animations, cdk, cli, common, compiler, compiler-cli, core
+... forms, material, platform-browser, platform-browser-dynamic
+... router
+
+Package                         Version
+---------------------------------------------------------
+@angular-devkit/architect       0.1801.4
+@angular-devkit/build-angular   18.1.4
+@angular-devkit/core            18.1.4
+@angular-devkit/schematics      18.1.4
+@schematics/angular             18.1.4
+rxjs                            6.6.7
+typescript                      5.5.4
+zone.js                         0.14.10
+```
+
+</details>
+
+## <font color="lightgray">~~残念~~</font>
+
+<font color="lightgray">~~すぐの解決は難しいと判断し、今回は [該当するコンポーネントをコメントアウト](https://github.com/ksh-fthr/angular-work/pull/655/commits/6a704eaf51c5d5803b0ce38045d2bc8103ea640b) することで回避しました。~~</font>
 
 # まとめにかえて
 
