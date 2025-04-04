@@ -9,7 +9,7 @@ Angular v17.1 で **Signal Inputs** がリリースされました。
 ここで見出しを拝借しますと
 
 - [`ngOnChanges` が不要になる](https://zenn.dev/lacolaco/articles/angular-signal-inputs#ngonchanges%E3%81%8C%E4%B8%8D%E8%A6%81%E3%81%AB%E3%81%AA%E3%82%8B)
-- [TypeScriptのstrictPropertyInitializationを常に有効化できる](https://zenn.dev/lacolaco/articles/angular-signal-inputs#%E3%82%A4%E3%83%B3%E3%83%97%E3%83%83%E3%83%88%E3%81%8C%E3%82%A4%E3%83%9F%E3%83%A5%E3%83%BC%E3%82%BF%E3%83%96%E3%83%AB%E3%81%AB%E3%81%AA%E3%82%8B)
+- [TypeScriptのstrictPropertyInitializationを常に有効化できる](https://zenn.dev/lacolaco/articles/angular-signal-inputs#typescript%E3%81%AEstrictpropertyinitialization%E3%82%92%E5%B8%B8%E3%81%AB%E6%9C%89%E5%8A%B9%E5%8C%96%E3%81%A7%E3%81%8D%E3%82%8B)
 - [インプットがイミュータブルになる](https://zenn.dev/lacolaco/articles/angular-signal-inputs#%E3%82%A4%E3%83%B3%E3%83%97%E3%83%83%E3%83%88%E3%81%8C%E3%82%A4%E3%83%9F%E3%83%A5%E3%83%BC%E3%82%BF%E3%83%96%E3%83%AB%E3%81%AB%E3%81%AA%E3%82%8B)
 
 といった内容で Signal Inputs に変えることによるメリットを簡潔にわかりやすく説明してくださっています。
