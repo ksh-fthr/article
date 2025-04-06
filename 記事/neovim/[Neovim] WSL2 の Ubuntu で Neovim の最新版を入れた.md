@@ -30,7 +30,7 @@ WSL2 で入れた Ubuntu において、`apt install neovim` でインストー�
 
 # やったこと
 
-ということで、最新版の Neovim を入れるべく、[こちら](https://github.com/neovim/neovim/blob/master/INSTALL.md#linux) の手順に従い AppImage から最新版をインストールしました。
+ということで、最新版の Neovim を入れるべく、[こちら](https://github.com/neovim/neovim/blob/master/INSTALL.md#appimage-universal-linux-package) の手順に従い AppImage から最新版をインストールしました。
 
 ## 古い Neovim の削除
 
@@ -45,15 +45,15 @@ WSL2 で入れた Ubuntu において、`apt install neovim` でインストー�
 次に AppImage から Neovim をインストールします。
 
 ```bash
-% curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+% curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
 100 10.6M  100 10.6M    0     0  4291k      0  0:00:02  0:00:02 --:--:-- 7477k
 
-% chmod u+x nvim.appimage
-% ./nvim.appimage
+% chmod u+x nvim-linux-x86_64.appimage
+% ./nvim-linux-x86_64.appimage
 ```
 
 ## エラー発生
@@ -61,7 +61,7 @@ WSL2 で入れた Ubuntu において、`apt install neovim` でインストー�
 問題がなければ上記でインストールされるようですが、私の環境では次のエラーがでました。
 
 ```bash
-% ./nvim.appimage
+% ./nvim-linux-x86_64.appimage
 dlopen(): error loading libfuse.so.2
 
 AppImages require FUSE to run.
@@ -73,10 +73,10 @@ for more information
 
 ## エラーへの対応～インストール完了
 
-前掲の [インストール手順](https://github.com/neovim/neovim/blob/master/INSTALL.md#linux) にあるエラー時の手順に則り、次の手順を実行しました。
+前掲の [インストール手順](https://github.com/neovim/neovim/blob/master/INSTALL.md#appimage-universal-linux-package) にあるエラー時の手順に則り、次の手順を実行しました。
 
 ```bash
-% ./nvim.appimage --appimage-extract
+% ./nvim-linux-x86_64.appimage --appimage-extract
 # ログは省略
 
 % ./squashfs-root/AppRun --version
