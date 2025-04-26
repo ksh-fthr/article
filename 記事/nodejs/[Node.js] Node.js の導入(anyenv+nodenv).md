@@ -13,14 +13,14 @@
 
 ### 1. 依存パッケージのインストール( まだなら )
 
-#### linux / chromeos
+**linux / chromeos**
 
 ```bash
 sudo apt update
 sudo apt install -y git curl build-essential
 ```
 
-#### mac
+**mac**
 
 ```bash
 xcode-select --install
@@ -36,21 +36,21 @@ git clone https://github.com/anyenv/anyenv ~/.anyenv
 
 ### 3. シェルの設定ファイルに anyenv を追加
 
-#### bash の場合( `~/.bashrc` )
+**bash の場合( `~/.bashrc` )**
 
 ```bash
 echo 'export PATH="$HOME/.anyenv/bin:$PATH"' >> ~/.bashrc
 echo 'eval "$(anyenv init -)"' >> ~/.bashrc
 ```
 
-#### zsh の場合( `~/.zshrc` )
+**zsh の場合( `~/.zshrc` )**
 
 ```bash
 echo 'export PATH="$HOME/.anyenv/bin:$PATH"' >> ~/.zshrc
 echo 'eval "$(anyenv init -)"' >> ~/.zshrc
 ```
 
-#### 設定を反映( bash / zsh 共通)
+**設定を反映( bash / zsh 共通)**
 
 ```bash
 exec $SHELL -l
@@ -102,7 +102,7 @@ nodenv global 23.11.0
 
 ### インストール可能な nodejs のバージョンを確認する
 
-#### 事前準備: `node-build` が必要
+**事前準備: `node-build` が必要**
 
 `nodenv` 単体ではバージョンリストを出せないので、Node.js のビルド機能を提供する `node-build` を一緒に入れておく必要があります。
 
@@ -119,7 +119,7 @@ git clone https://github.com/nodenv/node-build.git "$(nodenv root)"/plugins/node
 これで OK。
 
 
-#### インストール可能なバージョン一覧を表示
+**インストール可能なバージョン一覧を表示**
 
 バージョン一覧は...
 
@@ -157,9 +157,10 @@ Use 'nodenv install --list-all / -L' to show all local versions.
 その場合はご自身の環境を見直してみてください。
 
 ### 補足: よく使うコマンド
-[こちら](https://github.com/nodenv/nodenv?tab=readme-ov-file) から転載。
 
-#### [Installing Node versions](https://github.com/nodenv/nodenv?tab=readme-ov-file#installing-node-versions)
+詳しくは [こちら](https://github.com/nodenv/nodenv?tab=readme-ov-file) をご参照ください。
+
+**[Installing Node versions](https://github.com/nodenv/nodenv?tab=readme-ov-file#installing-node-versions)**
 
 バージョンの一覧を出すのとインストールのためのコマンド。
 
@@ -174,7 +175,7 @@ nodenv install -L
 nodenv install 23.11.0
 ```
 
-#### [Uninstalling nodenv](https://github.com/nodenv/nodenv?tab=readme-ov-file#uninstalling-nodenv)
+**[Uninstalling nodenv](https://github.com/nodenv/nodenv?tab=readme-ov-file#uninstalling-nodenv)**
 
 `nodenv` をアンインストールする場合は下記で削除してやればよいです。
 これで `${nodenv root}/versions/` 配下のすべてのバージョンが削除されます。
@@ -183,7 +184,7 @@ nodenv install 23.11.0
 rm -rf `nodenv root`
 ```
 
-#### [環境全体に反映(nodenv global)](https://github.com/nodenv/nodenv?tab=readme-ov-file#nodenv-global)
+**[環境全体に反映(nodenv global)](https://github.com/nodenv/nodenv?tab=readme-ov-file#nodenv-global)**
 
 バージョン名を `~/.nodenv/version` ファイルに書き込むことで、すべてのシェルで使用される Node のグローバルバージョンを設定します。
 このバージョンは、アプリケーション固有の `.node-version` ファイル、または `NODENV_VERSION` 環境変数によって上書きすることができます。
@@ -192,7 +193,7 @@ rm -rf `nodenv root`
 nodenv global 23.11.0
 ```
 
-#### [アプリローカル環境に反映(nodenv local)](https://github.com/nodenv/nodenv?tab=readme-ov-file#nodenv-local)
+**[アプリローカル環境に反映(nodenv local)](https://github.com/nodenv/nodenv?tab=readme-ov-file#nodenv-local)**
 
 カレントディレクトリの `.node-version` ファイルにバージョン名を書き込むことで、ローカルのアプリケーション固有の Node バージョンを設定します。
 このバージョンはグローバル・バージョンをオーバーライドし、`NODENV_VERSION` 環境変数を設定するか nodenv シェル・コマンドでオーバーライドすることができます。
@@ -207,7 +208,7 @@ nodenv local 23.11.0
 nodenv local --unset
 ```
 
-#### [nodenv version](https://github.com/nodenv/nodenv?tab=readme-ov-file#nodenv-version)
+**[nodenv version](https://github.com/nodenv/nodenv?tab=readme-ov-file#nodenv-version)**
 
 インストールされているバージョンを知りたければ下記を実行します。
 
@@ -219,7 +220,7 @@ nodenv versions
   * 23.11.0 (set by /Users/will/.nodenv/version)
 ```
 
-#### [nodenv rehash](https://github.com/nodenv/nodenv?tab=readme-ov-file#nodenv-rehash)
+**[nodenv rehash](https://github.com/nodenv/nodenv?tab=readme-ov-file#nodenv-rehash)**
 
 新しい node バージョン( ※-1 ) や npm パッケージをインストールした後にこのコマンドを実行します。
 そうすることで `nodenv` がインストールした新しいコマンドを認識できるようになります。
