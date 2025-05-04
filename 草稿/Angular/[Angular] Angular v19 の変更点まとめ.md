@@ -58,7 +58,7 @@ Angular のテンプレートでは `this` はコンポーネントのコンテ�
 
 **1. ChangeDetection 外でトリガーされた effect は、ChangeDetection 中に実行される**
 
-[v18 以前]
+[v18以前]
 ChangeDetection 外で Signal を変更すると、effect は **microtask ( `Promise.resolve().then(...)` ) として非同期で実行** されていました。
 
 [v19]
@@ -88,7 +88,7 @@ export class DemoComponent {
 }
 ```
 
-[v18 以前]
+[v18以前]
 ChangeDetection の最中にテンプレートが更新されてから effect が走っていました。
 
 [v19]
