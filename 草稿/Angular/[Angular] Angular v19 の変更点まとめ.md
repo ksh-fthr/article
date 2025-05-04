@@ -13,7 +13,7 @@
   - https://blog.angular.dev/meet-angular-v19-7b29dfd05b84
 
 
-## Breaking Changes ( 破壊的変更 )
+## Breaking Changes( 破壊的変更 )
 ### compiler
 
 html テンプレートのコンテキスト変数( `#foo` で定義したもの )に対して、下記のような `this` を使った参照ができなくなります。
@@ -21,15 +21,13 @@ Angular のテンプレートでは `this` はコンポーネントのコンテ�
 
 
 [v18以前はできた]
-
 ```html
 <ng-template let-foo="someValue">
-  {{ this.foo }}  <!-- これは foo を参照できた (意図しない動作) -->
+  {{ this.foo }}  <!-- これは foo を参照できた( 意図しない動作 ) -->
 </ng-template>
 ```
 
 [v19ではできない]
-
 ```html
 <ng-template let-foo="someValue">
   {{ this.foo }}  <!-- エラー！ -->
@@ -59,7 +57,7 @@ Angular のテンプレートでは `this` はコンポーネントのコンテ�
 **1. ChangeDetection 外でトリガーされた effect は、ChangeDetection 中に実行される**
 
 [v18以前]
-ChangeDetection 外で Signal を変更すると、effect は **microtask ( `Promise.resolve().then(...)` ) として非同期で実行** されていました。
+ChangeDetection 外で Signal を変更すると、effect は **microtask( `Promise.resolve().then(...)` )として非同期で実行** されていました。
 
 [v19]
 ChangeDetection 外からトリガーされた場合も、**次の ChangeDetection の中で effect が実行されるように** なりました。
@@ -103,7 +101,6 @@ ChangeDetection 中に値が変わった場合、テンプレートが描画さ�
 v19 のこのタイミング変更により、ユニットテストで次のような違いが出ることがあります。
 
 [v18以前]
-
 ```ts
 mySignal.set(5);
 // microtask の後に effect が実行された
@@ -166,7 +163,6 @@ createComponent(MyComponent, { projectableNodes: [[document.createTextNode('')]]
 
 
 [v18以前]
-
 ```ts
 import { Router } from '@angular/router';
 
@@ -191,6 +187,7 @@ bootstrapApplication(AppComponent, {
 });
 ```
 
+
 **方法-2. 代替案の 2つ目は RouterModule.forRoot の追加オプションで errorHandler プロパティを設定する**
 
 ```ts
@@ -211,6 +208,7 @@ const routes: Routes = [ /* ルート定義 */ ];
 })
 export class AppRoutingModule {}
 ```
+
 
 **ナビゲーションエラーで Promise の reject を防ぎたい場合は resolveNavigationPromiseOnError を活用する**
 
@@ -245,7 +243,7 @@ Angular 19 では `Resolve<T>` インターフェースの戻り値として `Re
 
 [v18以前]
 Resolver の戻り値として `Observable<T>` や `Promise<T>` を返すことができました。
-またリダイレクトは Router Guard ( `canActivate` ) を使う必要がありました。
+またリダイレクトは Router Guard( `canActivate` )を使う必要がありました。
 
 ```ts
 import { Resolve } from '@angular/router';
@@ -280,7 +278,7 @@ export class DataResolver implements Resolve<string | RedirectCommand> {
 }
 ```
 
-- ルート設定で上記を利用するコード( resolve を適用 )
+ルート設定で上記を利用するコード( resolve を適用 )はこちらです。
 
 ```ts
 import { Routes } from '@angular/router';
@@ -311,7 +309,6 @@ const routes: Routes = [
 v19 では代わりに `APP_ID` DIトークンを使用してアプリケーションIDを設定するようになります。
 
 [v18以前]
-
 ```ts
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -328,7 +325,6 @@ export class AppModule {}
 ```
 
 [v19]
-
 ```ts
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -350,19 +346,17 @@ export class AppModule {}
 `name` オプションが廃止されて `project` オプションに統合されました。
 
 [v18以前]
-
 ```bash
 ng add @angular/localize --name=hoge
 ```
 
 [v19]
-
 ```bash
 ng add @angular/localize --project=hoge
 ```
 
 
-### テスト関連での変更 ( v19での挙動変更 )
+### テスト関連での変更( v19での挙動変更 )
 
 v19 へのアップデートにより、これまで通っていた一部のテストが失敗する可能性があります。
 
@@ -372,7 +366,7 @@ v19 へのアップデートにより、これまで通っていた一部のテ�
 その結果、自動変更検知中に発生したエラーが `ErrorHandler` に報告されるようになりました。
 これにより、 `カスタム ErrorHandler` を設定している場合、今まで報告されなかったエラーが検出される可能性があります。
 
-つまり `autoDetectChanges(true)` を設定すると、テスト中に Angular の変更検知 ( ChangeDetection ) が自動的に実行されます。
+つまり `autoDetectChanges(true)` を設定すると、テスト中に Angular の変更検知( ChangeDetection )が自動的に実行されます。
 これによって変更検知中に発生したエラーが `ErrorHandler` に正しく報告されるようになったので、今まで検出されなかったエラーが `ErrorHandler` で拾われる可能性があるということです。
 
 というわけで、テストの信頼性向上に寄与する変更といえると思います。
