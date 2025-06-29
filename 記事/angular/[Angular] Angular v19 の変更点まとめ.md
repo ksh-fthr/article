@@ -1,3 +1,29 @@
+## 目次
+
+1. [はじめに](#はじめに)
+2. [Breaking Changes](#breaking-changes)
+   * [Compiler: テンプレート変数と `this` の関係](#compiler-テンプレート変数と-this-の関係)
+   * [Core の変更点](#core-の変更点)
+     * standalone のデフォルト化
+     * TypeScript v5.5 未満の非サポート
+     * `effect` API の実行タイミング変更
+     * `PendingTasks` への名称変更
+     * `createComponent` のデフォルトコンテンツ処理
+     * `KeyValueDiffers.factories` の削除
+   * [Router の変更点](#router-の変更点)
+     * `router.errorHandler` の削除と代替手段
+     * `resolveNavigationPromiseOnError` の導入
+     * Resolver でのリダイレクト（`RedirectCommand`）対応
+   * [Elements の最適化と影響](#elements-の最適化と影響)
+   * [Platform-browser の SSR 周りの変更](#platform-browser-の-ssr-周りの変更)
+   * [Localize の CLI オプション変更](#localize-の-cli-オプション変更)
+   * [テスト関連での変更](#テスト関連での変更)
+     * `autoDetectChanges` の挙動変更
+     * `ApplicationRef.tick()` の例外処理
+     * Zone に関する動作変更
+3. [おわりに](#おわりに)
+
+
 ## はじめに
 
 本記事では、Angular v19 のリリースに伴う主な変更点を簡潔にまとめてみました。
@@ -15,8 +41,8 @@
   - https://blog.angular.dev/meet-angular-v19-7b29dfd05b84
 
 
-## Breaking Changes( 破壊的変更 )
-### compiler
+## Breaking Changes
+### Compiler: テンプレート変数と `this` の関係
 
 html テンプレートのコンテキスト変数( `#foo` で定義したもの )に対して、下記のような `this` を使った参照ができなくなります。
 Angular のテンプレートでは `this` はコンポーネントのコンテキストにバインドされているため、テンプレート変数にアクセスするには `this` を使わず、直接 `foo` と書く必要があります。
@@ -41,22 +67,21 @@ Angular のテンプレートでは `this` はコンポーネントのコンテ�
 - テンプレート変数を参照する場合は、 `this.` をつけずに `foo` と書くのが正解
 
 
-### core　　
+### Core の変更点
 
-**新しく生成される directives, components, pipes はデフォルトで `standalone` になるようになった**
+#### standalone のデフォルト化
+**新しく生成される directives, components, pipes はデフォルトで `standalone` になるようになりました。**
 
 `@NgModule` に含まれる directives, components, pipes は自動的に `standalone: false` と見なされます。これは `ng update` 時に自動で付与されます。
 この変更は `ng update` 実行時に自動変換されますが、既存の NgModule ベースの構成も引き続き利用可能です。
 
-
-**TypeScript v5.5 未満をサポートしなくなった**
-
+#### TypeScript v5.5 未満の非サポート
 単純にサポートするバージョンの話です。
+TypeScript v5.5 未満をサポートしなくなりました。
 
 
-**effect API のタイミングが変わる**
-
-**1. ChangeDetection 外でトリガーされた effect は、ChangeDetection 中に実行される**
+#### `effect` API の実行タイミング変更
+**1. ChangeDetection 外でトリガーされた effect は、ChangeDetection 中に実行されるようになります。**
 
 [v18以前]
 ChangeDetection 外で Signal を変更すると、effect は **microtask( `Promise.resolve().then(...)` )として非同期で実行** されていました。
@@ -117,13 +142,15 @@ mySignal.set(5);
 したがって、**`detectChanges()` を挟まないと effect が走らない場合がある** ということです。
 
 
-**[ExperimentalPendingTasks](https://v18.angular.jp/api/core/ExperimentalPendingTasks) が [PendingTasks](https://next.angular.dev/api/core/PendingTasks) に名称変更した**
+#### `PendingTasks` への名称変更
+**[ExperimentalPendingTasks](https://v18.angular.jp/api/core/ExperimentalPendingTasks) が [PendingTasks](https://next.angular.dev/api/core/PendingTasks) に名称変更されました。**
 
 SSR で効果を発揮するものになります。
 `ExperimentalPendingTasks` は **正式 API として昇格** し、名称も `PendingTasks` に変更されました。
 
 
-**createComponent は、projectableNodes が空の場合にデフォルトのフォールバックをレンダリングするようになった**
+#### `createComponent` のデフォルトコンテンツ処理
+**createComponent は、projectableNodes が空の場合にデフォルトのフォールバックをレンダリングするようになりました。**
 
 createComponent API で `projectableNodes` に空の配列を渡すと `ng-content` のデフォルトのフォールバック・コンテンツが存在する場合にレンダリングされます。
 デフォルト・コンテンツをレンダリングしないようにするには、`projectableNode` として `document.createTextNode('')` を渡せばよいです。
@@ -153,15 +180,16 @@ createComponent(MyComponent, { projectableNodes: [[]] });
 createComponent(MyComponent, { projectableNodes: [[document.createTextNode('')]] });
 ```
 
-
-**KeyValueDiffers の 非推奨プロパティである `factories` が削除された**
+#### `KeyValueDiffers.factories` の削除
+**KeyValueDiffers の 非推奨プロパティである `factories` が削除されました。**
 
 オブジェクトの変更検知や差分処理で使うケースがあるようです。
 
 
-### router
+### Router の変更点
 
-**Angular 19 では、Router.errorHandler プロパティが削除された**
+#### `router.errorHandler` の削除と代替手段
+**Angular v19 では、Router.errorHandler プロパティが削除されました。**
 
 
 [v18以前]
@@ -212,7 +240,8 @@ export class AppRoutingModule {}
 ```
 
 
-**ナビゲーションエラーで Promise の reject を防ぎたい場合は resolveNavigationPromiseOnError を活用する**
+#### `resolveNavigationPromiseOnError` の導入
+**ナビゲーションエラーで Promise の reject を防ぎたい場合は resolveNavigationPromiseOnError を利用することになります。**
 
 ```ts
 import { provideRouter, withNavigationErrorHandler, resolveNavigationPromiseOnError } from '@angular/router';
@@ -238,10 +267,10 @@ Promise の `reject` を防ぐために使うが、必要なケースは限定�
 
 **Resolve インターフェイスの戻り値の型に RedirectCommand が追加された**
 
-Angular 19 では `Resolve<T>` インターフェースの戻り値として `RedirectCommand` がサポートされるようになったとのことです。
+Angular v19 では `Resolve<T>` インターフェースの戻り値として `RedirectCommand` がサポートされるようになったとのことです。
 
 従来、 `Resolver` はデータを取得するために使われ、ルートガードのようにリダイレクトすることはできませんでした。
-しかし、Angular 19 からは `Resolver` の結果として `RedirectCommand` を返すことで、リダイレクトが可能になります。
+しかし、Angular v19 からは `Resolver` の結果として `RedirectCommand` を返すことで、リダイレクトが可能になります。
 
 [v18以前]
 Resolver の戻り値として `Observable<T>` や `Promise<T>` を返すことができました。
@@ -295,7 +324,7 @@ const routes: Routes = [
 ];
 ```
 
-### elements
+### Elements の最適化と影響
 
 カスタムCD( ChangeDetection ) から hybrid scheduler の切り替えの一環としての変更です。
 変更検知の最適化が行われました。
@@ -303,7 +332,7 @@ const routes: Routes = [
 で、最適化したことでエレメントはより効率的になるものの、テストに影響が出る可能性があるので v19 にアップデートしたらテストが通らなくなるかもしれない。
 
 
-### platform-browser
+### Platform-browser の SSR 周りの変更
 
 **SSR に関する変更点**
 
@@ -343,7 +372,7 @@ export class AppModule {}
 ```
 
 
-### localize
+### Localize の CLI オプション変更
 
 `name` オプションが廃止されて `project` オプションに統合されました。
 
@@ -358,11 +387,12 @@ ng add @angular/localize --project=hoge
 ```
 
 
-### テスト関連での変更( v19での挙動変更 )
+### テスト関連での変更
 
 v19 へのアップデートにより、これまで通っていた一部のテストが失敗する可能性があります。
 
-**1. `ComponentFixture` の `autoDetectChanges` の挙動が変更され、 `ErrorHandler` に報告されるように。**
+#### `autoDetectChanges` の挙動変更
+`ComponentFixture` の `autoDetectChanges` の挙動が変更され、 `ErrorHandler` に報告されるようになります。**
 
 `ComponentFixture` の `autoDetect` 機能が `ApplicationRef` にアタッチされるようになりました。
 その結果、自動変更検知中に発生したエラーが `ErrorHandler` に報告されるようになりました。
@@ -373,12 +403,14 @@ v19 へのアップデートにより、これまで通っていた一部のテ�
 
 というわけで、テストの信頼性向上に寄与する変更といえると思います。
 
-**2. `ApplicationRef.tick()` の例外が `TestBed` 実行時に再スローされるように。**
+#### `ApplicationRef.tick()` の例外処理
+**`ApplicationRef.tick()` の例外が `TestBed` 実行時に再スローされるようになります。**
 
 `ApplicationRef.tick()` の実行中にエラーが発生した場合、 `TestBed` でテスト実行時にエラーが再スロー( rethrow )されるようになりました。
 これにより変更検知中に発生するエラーがより明示的になり、テストで検出しやすくなりました。
 
-**3. Zone の動作変更により、fakeAsync の制御対象が変わる可能性あり。**
+#### Zone に関する動作変更
+**Zone の動作変更により、fakeAsync の制御対象が変わる可能性があります。**
 
 Angular のゾーン外で動作するタイマー( `zone coalescing` や `hybrid mode scheduling` に使われるもの )の動作が変わりました。
 これらのタイマーは、"root zone"( グローバルな JavaScript 実行環境 )ではなく、"Angular の 1 つ上のゾーン" で動作するようになったとのことです。
