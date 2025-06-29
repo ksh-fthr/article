@@ -367,70 +367,70 @@ this.viewportScroller.scrollToAnchor('contact', {
 
 ### 主な Breaking Changes
 
-### common
+#### common
 
 - `Y`( 週番号付きの年 )フォーマット使用時、`w`( 週番号 )なしの使用が警告対象に
 - `AsyncPipe` が未処理エラーをアプリの `ErrorHandler` に直接伝播するよう変更。Zoneベース環境と動作は同等だが、テスト環境で差異が生じる可能性あり
 
-### compiler
+#### compiler
 
 - テンプレート内の `in` / `void` は、オペレータとして解釈されるように変更
 -  `{{void}}` → 無効に( 以前はクラスのプロパティとして参照された )→ `{{this.void}}` に変更必要
 
-### core
+#### core
 
-#### TypeScript/Node.js サポートの変更
+**TypeScript/Node.js サポートの変更**
 
 - TypeScript v5.8未満はサポート終了
 - Node.js v18および v22.0〜22.10 はサポート対象外。v20.11.1以上が必要
 
-#### TestBed 関連
+**TestBed 関連**
 
 - `TestBed.flushEffects()` 削除 → `TestBed.tick()` を使用
 - `TestBed.get()` 削除( 代わりに `TestBed.inject()` を使用 )
 - `injector.get()` の `any` オーバーロードが削除され、`ProviderToken<T>` のみが許容されるように変更
 - `InjectFlags` は削除され、関連 API は対応しなくなった
 
-#### API リネーム・仕様変更
+**API リネーム・仕様変更**
 
 - `provideExperimentalCheckNoChangesForDebug` → `provideCheckNoChangesConfig` にリネーム
 - `provideExperimentalZonelessChangeDetection` → `provideZonelessChangeDetection`( Developer Preview に昇格 )
 - `afterRender` → `afterEveryRender` に名称変更
 - `PendingTasks.run()` は async 関数の戻り値を返さなくなった( 手動再実装が必要な場合あり )
 
-#### エラーハンドリング動作の変更
+**エラーハンドリング動作の変更**
 
 - イベントリスナの未処理エラーは、ErrorHandlerだけでなくAngular内部でも処理
 - `ApplicationRef.tick()` はエラーをキャッチせずスロー → 呼び出し側で明示的な処理が必要
 
-#### アニメーションと変更検知
+**アニメーションと変更検知**
 
 - アニメーションは変更検知時や `ApplicationRef.tick()` 呼び出し時に確実に flush されるように変更
 - DOM 状態に依存するテストに影響する可能性あり
 
-#### `ng-reflect-*` 属性の削除
+**`ng-reflect-*` 属性の削除**
 
 - `ng-reflect-*` 属性が出力されなくなった( デフォルト )
 - 必要に応じて `provideNgReflectAttributes()`( @angular/core から import )で dev モード時に再有効化可
 
-### router
+#### router
 
 - `RedirectFn` は `Observable` / `Promise` を返せるように
 - いくつかの `Router` API は `readonly array` に対応( ミューテーションしない前提 )
 - ルートガードの型定義において `any` は除外( `string` は非推奨ながら残存 )
 
-## Deprecations
+### Deprecations
 
-### core
+#### core
 
 - `ngIf` / `ngFor` / `ngSwitch` は非推奨 → `@if` / `@for` / `@switch` に移行推奨
 
-### platform-browser
+#### platform-browser
 
 - `@angular/platform-browser-dynamic` のすべてのエントリが非推奨
 - `HammerJS` サポートは非推奨( 将来的に削除予定 )
 
-### `platform-server`
+#### platform-server
 
 - `@angular/platform-server/testing` は非推奨 → SSR 確認は E2E テストを使用することが推奨
 
@@ -466,11 +466,6 @@ this.viewportScroller.scrollToAnchor('contact', {
 | `platform-browser-dynamic`    | 全エントリが非推奨                               | —                                      |
 | `HammerJS`                    | サポート終了予定                                 | —                                      |
 | `platform-server/testing`     | 非推奨 → SSR の検証は E2E テスト推奨             | —                                      |
-
-### 備考
-
-- **新しい構文への移行やエラー捕捉の仕様変更がテストに大きく影響する**可能性があるため、既存コードやテストスイートの検証・修正が必要です
-- `provideNgReflectAttributes()` など一部機能は dev モード限定で旧動作を再有効化可能です( 移行期の一時措置として有効 )
 
 
 ## 参考
