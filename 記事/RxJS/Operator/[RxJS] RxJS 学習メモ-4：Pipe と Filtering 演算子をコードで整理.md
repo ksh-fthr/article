@@ -18,9 +18,9 @@
 
 これまでに次の記事を投稿してまいりました。
 
-- [[RxJS] RxJS の学習メモ-Observable と Observer](https://qiita.com/ksh-fthr/items/2933492929bbeccece50)
-- [[RxJS] RxJS の学習メモ-Subject](https://qiita.com/ksh-fthr/items/54b19b4160505e2fddd9)
-- [[RxJS] RxJS の学習メモ-Subject の派生](https://qiita.com/ksh-fthr/items/6c6cb89acce6fe756c60)
+- [[RxJS] RxJS 学習メモ-1：ObservableとObserver の関係をコードで整理](https://qiita.com/ksh-fthr/items/2933492929bbeccece50)
+- [[RxJS] RxJS 学習メモ-2：RxJS Subject をコードで理解する – ObservableとObserverの架け橋](https://qiita.com/ksh-fthr/items/54b19b4160505e2fddd9)
+- [[RxJS] RxJS 学習メモ-3：RxJS Subject 派生まとめ – Behavior／Replay／Async をコードで整理](https://qiita.com/ksh-fthr/items/6c6cb89acce6fe756c60)
 
 今回は [Operators](https://rxjs.dev/guide/operators) について学びます。
 

@@ -18,8 +18,8 @@
 
 これまでに次の記事を投稿してまいりました。
 
-- [[RxJS] RxJS の学習メモ-Observable と Observer](https://qiita.com/ksh-fthr/items/2933492929bbeccece50)
-- [[RxJS] RxJS の学習メモ-Subject](https://qiita.com/ksh-fthr/items/54b19b4160505e2fddd9)
+- [[RxJS] RxJS 学習メモ-1：ObservableとObserver の関係をコードで整理](https://qiita.com/ksh-fthr/items/2933492929bbeccece50)
+- [[RxJS] RxJS 学習メモ-2：RxJS Subject をコードで理解する – ObservableとObserverの架け橋](https://qiita.com/ksh-fthr/items/54b19b4160505e2fddd9)
 
 前回に引き続き、今回も [Subject](https://rxjs.dev/guide/subject) について学びます。
 
