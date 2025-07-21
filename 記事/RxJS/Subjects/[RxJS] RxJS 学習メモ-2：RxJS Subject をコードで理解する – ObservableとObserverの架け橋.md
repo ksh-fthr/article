@@ -18,7 +18,7 @@
 
 これまでに次の記事を投稿してまいりました。
 
-- [[RxJS] RxJS の学習メモ-Observable と Observer](https://qiita.com/ksh-fthr/items/2933492929bbeccece50)
+- [[RxJS] RxJS 学習メモ-1：ObservableとObserver の関係をコードで整理](https://qiita.com/ksh-fthr/items/2933492929bbeccece50)
 
 今回は [Subject](https://rxjs.dev/guide/subject) について学びます。
 
