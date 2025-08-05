@@ -8,19 +8,19 @@
 ### zip コマンドの形式
 
 ```bash
-zip -e output.zip file1 file2
+zip -e archive.zip file1 file2
 ```
 
 ### zip コマンドのオプション説明
 
 - `-e` オプション: 暗号化を行う
-- `output.zip`: 作成される ZIP ファイル名
+- `archive.zip`: 作成される ZIP ファイル名
 - `file1 file2`: 圧縮したいファイル( スペース区切りで複数指定可 )
 
 ### zip コマンドの実行例
 
 ```bash
-zip -e resume.zip resume1.pdf resume2.pdf
+zip -e archive.zip resume1.pdf resume2.pdf
 ```
 
 パスワードの **入力と確認** が求められます。
@@ -40,7 +40,7 @@ brew install p7zip
 ### 7zz コマンドの形式
 
 ```bash
-7zz a -tzip -p -mem=AES256 output.zip file1 file2
+7zz a -tzip -p -mem=AES256 archive.zip file1 file2
 ```
 
 ### 7zz コマンドのオプション説明
@@ -49,13 +49,13 @@ brew install p7zip
 - `-tzip`: ZIP形式で出力
 - `-p`: パスワード指定
 - `-mem=AES256`: AES-256 による強力な暗号化
-- `output.zip`: 作成される ZIP ファイル名
+- `archive.zip`: 作成される ZIP ファイル名
 - `file1 file2`: 圧縮したいファイル( スペース区切りで複数指定可 )
 
 ### 7zz コマンドの実行例
 
 ```bash
-7zz a -tzip -p -mem=AES256 resume.zip resume1.pdf resume2.pdf
+7zz a -tzip -p -mem=AES256 archive.zip resume1.pdf resume2.pdf
 ```
 
 このコマンドでは、実行時に安全な対話形式でパスワードが求められます。
@@ -63,7 +63,7 @@ brew install p7zip
 ### パスワードを直接指定する形式( 非推奨 )
 
 ```bash
-7zz a -tzip -phogehoge -mem=AES256 resume.zip resume1.pdf resume2.pdf
+7zz a -tzip -phogehoge -mem=AES256 archive.zip resume1.pdf resume2.pdf
 ```
 
 `-p` のあとに直接パスワードを記述すると、コマンド履歴などに残ってしまうためセキュリティ上好ましくありません。
@@ -71,28 +71,21 @@ brew install p7zip
 
 ## 応用テクニック
 
-### `.DS_Store` を除外して圧縮する( macOS 対策 )
-
-Finder 経由で作業したフォルダには `.DS_Store` が生成されることがあります。
-これを除外して zip を作成するには以下のようにします。
-
-```bash
-zip -r output.zip folder -x "*/.DS_Store"
-```
-
-- `-r`: 再帰的にフォルダ内を圧縮
-- `-x "*/.DS_Store"`: `.DS_Store` を除外
-
 ### フォルダを丸ごと圧縮する場合
 
+**zip を使用する場合**
+
 ```bash
-zip -r -e archive.zip my_folder
+zip -r -e archive.zip target_folder
 ```
 
-- `-r`: ディレクトリを再帰的に圧縮。
-- `-e`: 暗号化。
+**7zz を使用する場合**
 
-フォルダ内のファイル構造を保ったままパスワード付きで圧縮されます。
+```bash
+7zz a -tzip -p -mem=AES256 archive.zip target_folder
+```
+
+いずれもフォルダ構造を保持したまま、フォルダを暗号化して圧縮できます。
 
 ## セキュリティ上の注意点
 
