@@ -14,7 +14,9 @@
   // markdownlint の設定
   "markdownlint.config": {
     "MD025": false,  // single-title/single-h1: Multiple top-level headings in the same documentmarkdownlintMD025 を黙らせる
-    "MD033": false   // no-inline-html: Inline HTML [Element: details]markdownlintMD033 を黙らせる
+    "MD033": false , // no-inline-html: Inline HTML [Element: details]markdownlintMD033 を黙らせる
+    "MD036": false,  // Emphasis used instead of a headingmarkdownlintMD036 を黙らせる
+    "MD041": false,  // First line in a file should be a top-level headingmarkdownlintMD041 を黙らせる
   },
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#78cea7",
