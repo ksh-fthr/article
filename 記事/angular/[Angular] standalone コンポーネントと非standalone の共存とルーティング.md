@@ -1,12 +1,7 @@
 ## はじめに
 
-Angular v20 から、`ng generate component` コマンドで作成されるコンポーネントは、デフォルトで `standalone: true` が付与されるようになりました。[^1]
-[^1]: これは Angular の CLI 設定 ( standalone: true ) によるものであり、Angular 自体が standalone: true を暗黙的に解釈するわけではありません。
-
-これに伴い VSCode 上では `standalone: false` を明示しても、自動的に削除されることがあります。[^2]
-[^2]: これは Angular CLI の設定ファイル ( angular.json ) で `standalone: true` がデフォルトになっているためです。エディタが削除しているのではなく、Angular の Language Service による挙動です。
-
-例えば、以下のように `standalone: false` を明示しても、
+Angular v19 から、`ng generate component` コマンドで作成されるコンポーネントは、デフォルトで `standalone: true` となりました。
+これに伴い、たとえば VSCode では次のように `standalone: false` を明示しても...
 
 ```ts
 @Component({
@@ -14,14 +9,15 @@ Angular v20 から、`ng generate component` コマンドで作成されるコ�
 })
 ```
 
-保存時に自動的に削除されてしまうことがあります。これは CLI の設定によって `standalone: true` が前提とされているためであり、Angular Language Service による補完動作の一環です。
+保存時に自動的に削除されてしまうことがあります。
+v19 以降は standalone コンポーネントであることを強く意識する必要がありますね。
 
-本記事では **既存プロジェクトに残っている非standalone コンポーネント** と、**v20 で作成した standalone コンポーネント** を共存させる方法、および **standalone コンポーネントのルーティング構成** について整理します。
+本記事では **既存プロジェクトに残っている非standalone コンポーネント** と、**v19 で作成した standalone コンポーネント** を共存させる方法、および **standalone コンポーネントのルーティング構成** について整理します。
 
 ## 非standalone コンポーネントのルーティング
 
-以前の記事[^3] で扱ったように、非standalone コンポーネントは基本的に `@NgModule` を経由して Angular に認識させます。
-[^3]: [[Angular] ルーティング による画面遷移](https://qiita.com/ksh-fthr/items/91c85a06998314c95648)
+以前の記事[^1] で扱ったように、非standalone コンポーネントは基本的に `@NgModule` を経由して Angular に認識させます。
+[^1]: [[Angular] ルーティング による画面遷移](https://qiita.com/ksh-fthr/items/91c85a06998314c95648)
 
 具体的には次の構成としています。
 
@@ -79,7 +75,7 @@ export class AppModule {}
 
 ## standalone コンポーネントの共存
 
-v20 では新しく作成したコンポーネントはすべて **standalone** です。
+v19 では新しく作成したコンポーネントはすべて **standalone** です。
 非standalone のように `@NgModule` に登録する必要はなく、 **利用する側のコンポーネントで `imports` に追加するだけ** で使用できます。
 
 ```ts
@@ -195,7 +191,7 @@ AppModule
 
 :::note info
 
-* Angular v20 以降、CLI で生成されるコンポーネントはデフォルトで standalone になる
+* Angular v19 以降、CLI で生成されるコンポーネントはデフォルトで standalone になる
 * **非standalone コンポーネント** は従来通り `@NgModule` 経由で利用可能
 * **standalone コンポーネント** は `imports` に追加するだけで利用可能（`NgModule` 不要）
 * ルーティングは `forChild` を用いて standalone と非standalone を同居させられる
