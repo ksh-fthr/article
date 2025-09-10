@@ -18,8 +18,6 @@ Angular v20 から、`ng generate component` コマンドで作成されるコ�
 
 本記事では **既存プロジェクトに残っている非standalone コンポーネント** と、**v20 で作成した standalone コンポーネント** を共存させる方法、および **standalone コンポーネントのルーティング構成** について整理します。
 
----
-
 ## 非standalone コンポーネントのルーティング
 
 以前の記事[^3] で扱ったように、非standalone コンポーネントは基本的に `@NgModule` を経由して Angular に認識させます。
@@ -79,8 +77,6 @@ export class FeatureAllPageRoutingModule {}
 export class AppModule {}
 ```
 
----
-
 ## standalone コンポーネントの共存
 
 v20 では新しく作成したコンポーネントはすべて **standalone** です。
@@ -104,8 +100,6 @@ export class ChildComponent {}
 })
 export class ParentComponent {}
 ```
-
----
 
 ## standalone コンポーネントのルーティング
 
@@ -188,18 +182,14 @@ export class AppModule {}
 
 こうして `/design-pattern` でベース、`/design-pattern/state-pattern-client` で子コンポーネントが表示されるようになります。
 
----
-
 ## standalone コンポーネントと 非standalone コンポーネントを共存させた構成
 
 ```txt
 AppModule
 ├── FeatureAllPageRoutingModule
 │   ├── 非standalone: TabModule → TabComponent
-│   └── standalone: DesignPatternModule → DesignPatternBase → StatePatternClient
+│   └── standalone: FeatureDesignPatternModule → FeatureDesignPatternModule → StatePatternClientComponent
 ```
-
----
 
 ## まとめ
 
@@ -213,8 +203,6 @@ AppModule
 
 :::
 
----
-
 ## ソースコード
 
 今回の記事で扱ったコードは [こちら](https://github.com/ksh-fthr/angular-work) にあります。
@@ -222,6 +210,6 @@ AppModule
 
 * [AppModule](https://github.com/ksh-fthr/angular-work/blob/develop/src/app/app.module.ts)
 * [FeatureAllPageRoutingModule](https://github.com/ksh-fthr/angular-work/blob/develop/src/app/modules/feature-all-page-rounting.module.ts)
-* [DesignPatternModule](https://github.com/ksh-fthr/angular-work/blob/develop/src/app/modules/feature-design-pattern.module.ts)
-  * [DesignPatternBase](https://github.com/ksh-fthr/angular-work/blob/develop/src/app/component/design-pattern/design-pattern-base.component.ts)
-  * [StatePatternClient](https://github.com/ksh-fthr/angular-work/blob/develop/src/app/component/design-pattern/state/state-pattern-client.component.ts)
+* [FeatureDesignPatternModule](https://github.com/ksh-fthr/angular-work/blob/develop/src/app/modules/feature-design-pattern.module.ts)
+  * [FeatureDesignPatternModule](https://github.com/ksh-fthr/angular-work/blob/develop/src/app/component/design-pattern/design-pattern-base.component.ts)
+  * [StatePatternClientComponent](https://github.com/ksh-fthr/angular-work/blob/develop/src/app/component/design-pattern/state/state-pattern-client.component.ts)
