@@ -5,6 +5,10 @@
 Angular v22は、これまでに実験的（Experimental）として導入されていた数々の強力な機能（Signal Forms、Resource APIなど）が一挙に安定版（Stable）へと昇格した、モダンAngularの「集大成」とも言える非常に重要なマイルストーンリリースです。また、AI支援開発（Agentic workflows）を見据えた先進的な機能の追加や、パフォーマンスを重視したデフォルト設定の変更が行われています。
 
 :::note warn
+⚠️ **重要：環境要件の変更** ⚠️
+Angular v22では、**Node.js v20 のサポートが終了し、Node.js v22（またはv26）および TypeScript v6.0 が必須**となります。インフラやCI/CD環境を管理する際は、事前にこれらのアップデートを確認してください。
+
+:::
 
 ⚠️ **注意** ⚠️
 本記事は Angular v22 の公式リリースノートや各種解説記事をもとに、要点を整理・要約したものです。
@@ -100,7 +104,7 @@ export class UserProfileComponent {
 
 #### ③ Angular Aria
 
-アクセシビリティを考慮したUIを構築するための12のパターンを含む、アクセシブルUIプリミティブが安定版に到達しました。
+アクセシビリティを考慮したUIを構築するための12のパターン（ボタン、モーダル、ナビゲーションなど）を含む、アクセシブルUIプリミティブが安定版に到達しました。
 
 ### 3. 新しい `@Service` デコレータと `injectAsync` による遅延読み込みの導入
 
@@ -108,20 +112,9 @@ export class UserProfileComponent {
 
 * **`@Service` デコレータ**: 従来の冗長だった `@Injectable({ providedIn: 'root' })` パターンに代わる、新しい直感的なデコレータです。
 * **`injectAsync`**: サービスを必要なタイミングで非同期に遅延読み込み（Lazy-loading）し、コード分割（Code-splitting）を行うための、ファーストクラスのAPIです。
+  ※ 従来の `defer()` や `inject()` と比較して、よりクリーンな構文で特定のコンテキストにおいて型安全かつ直感的な実装を可能にします。
 
-**[v21 以前 (以前の挙動)]**
-
-```typescript
-import { Injectable } from '@angular/core';
-
-@Injectable({
-  providedIn: 'root'
-})
-export class DataService {}
-
-```
-
-**[v22 以降]**
+**[v12 以降]**
 
 ```typescript
 import { Service, injectAsync } from '@angular/core';
@@ -163,7 +156,7 @@ bootstrapApplication(AppComponent, {
 
 ### 5. テンプレート機能の人間工学的な各種強化
 
-HTMLテンプレートの記述がさらに柔軟に、そして厳格になり、開発効率を高める多くの機能が追加されました。
+HTMLテンプレートの記述がさらに柔軟に、誠に厳格になり、開発効率を高める多くの機能が追加されました。
 
 * **HTML要素内のコメントサポート**: テンプレートのプロパティやバインディングに対してコメントを付与できるようになりました。VS Codeでのコメントトグル（`Ctrl+/` や `Cmd+/`）にも完全対応しています。
 * **無効な `@for` ループのビルド時型チェック**: 従来はランタイムエラーになっていた不適切な `@for` ループの記述が、コンパイル時に型チェック（Build-time type checking）され、ビルドエラーとして検知可能になりました。
@@ -180,7 +173,6 @@ HTMLテンプレートの記述がさらに柔軟に、そして厳格になり�
 <div>
   <app-child [transform]="(val) => val * 2" [config]="{ ...baseConfig, theme: 'dark' }"></app-child>
 </div>
-
 ```
 
 ### 6. ルーティングにおけるデフォルト挙動の変更（破壊的変更）
@@ -189,28 +181,16 @@ HTMLテンプレートの記述がさらに柔軟に、そして厳格になり�
 
 #### ① `paramsInheritanceStrategy` のデフォルトが `'always'` に変更
 
-これまで子ルートから親ルートのパラメータを参照する際、`route.parent?.parent?.snapshot.params` のように冗長な記述を強いられることが多々ありましたが、デフォルトで親ルートのパラメータをすべて自動で引き継ぐ（`always`）ようになりました。以前の挙動（子ルートが空の場合のみ引き継ぐ）を維持したい場合は、明示的に `'emptyOnly'` を設定する必要があります。自動マイグレーションは提供されないため、ネストされたルートを持つアプリは動作検証が必要です。
+これまで子ルートから親ルートのパラメータを参照する際、`route.parent?.parent?.snapshot.params` のような冗長な記述を強いられることが多々ありましたが、デフォルトで親ルートのパラメータをすべて自動で引き継ぐ（`always`）ようになりました。
+
+⚠️ **重要：注意点**
+この変更には**自動マイグレーション（Schematics）が提供されません**。ネストされたルートを持つアプリケーションでは、意図しない挙動を防ぐために手動での確認と修正が必要です。以前の挙動（子ルートが空の場合のみ引き継ぐ）を維持したい場合は、明示的に `'emptyOnly'` を設定する必要があります。
 
 #### ② `canMatch` ガード関数の引数変更
 
 `canMatch` 関数に、第3引数として `currentSnapshot` が必須（Mandatory）となりました。これに伴う自動マイグレーション（Schematics）が提供されます。
 
-**[v21 以前 (以前の挙動)]**
-
-```typescript
-const routes: Routes = [
-  {
-    path: 'admin',
-    component: AdminComponent,
-    canMatch: [
-      (route: Route, segments: UrlSegment[]) => inject(AuthService).isAdmin()
-    ]
-  }
-];
-
-```
-
-**[v22 以降]**
+**[v21 以降]**
 
 ```typescript
 import { RouterStateSnapshot } from '@angular/router';
@@ -240,14 +220,12 @@ Angular v21から導入された、AIがソースコードを理解・編集し�
 ### 主な Major Features & Breaking Changes 一覧
 
 #### core
-
 * CLI等での新規コンポーネント生成時、デフォルトの変更検出ストラテジーが `ChangeDetectionStrategy.OnPush` に変更。
 * `Signal Forms`、`Asynchronous Reactivity APIs (Resource API)`、`Angular Aria` が実験的ステータスを脱し、正式に本番環境対応の安定版（Stable）へ昇格。
 * 新しい `@Service` デコレータが導入され、`@Injectable({ providedIn: 'root' })` の代替としてより簡潔に記述可能に。
-* DIにおいて、サービスを必要な時に動的・非同期にコード分割読み込みするための `injectAsync` APIが追加。
+* DIにおいて、サービスを必要な時に動的・非同期にコード分割読み込みするための `injectAsync` APIが追加（`defer`等よりもクリーンな構文を提供）。
 
 #### compiler / template
-
 * HTMLテンプレート内の要素、バインディング、プロパティに対するコメント記法をサポート（VS Codeのコメントトグル対応）。
 * テンプレート内で直接アロー関数（Arrow Functions）およびスプレッド構文（Spread syntax）の利用が可能に。
 * 無効な記述の `@for` ループをビルド時に検知するコンパイル時型チェックを導入（ランタイムエラーの防止）。
@@ -255,33 +233,27 @@ Angular v21から導入された、AIがソースコードを理解・編集し�
 * TypeScriptの `isolatedDeclarations` 下での NgModule コンパイルに対応し、より高速で並列なビルドが可能に。
 
 #### router
-
-* `paramsInheritanceStrategy` オプションのデフォルトが、従来の `'emptyOnly'` から `'always'` へ変更。親ルートのパラメータが子ルートへ常に自動継承されるように。
-* `canMatch` ガード関数において、第3引数である `currentSnapshot`（`RouterStateSnapshot`型）の受け取りが必須化（要コード修正、自動マイグレーションあり）。
+* **`paramsInheritanceStrategy`**: デフォルトが `'emptyOnly'` から `'always'` へ変更。**※注意：自動マイグレーションなし。**
+* **`canMatch` ガード関数**: 第3引数 `currentSnapshot` の受け取りが必須化（自動マイグレーションあり）。
 
 #### common / platform-browser
-
 * HTTPクライアント（HttpClient）の通信基盤として、従来のXMLHttpRequestに代わり **Fetch API がデフォルトで使用される**ように変更。
 * `provideClientHydration()` 使用時、**インクリメンタルハイドレーション（Incremental Hydration）が自動的にデフォルトで有効化**。
 
 #### 環境要件・AI
-
-* 推奨開発環境として **TypeScript v6.0** および **Node.js v22** 以降が必須に（Node.js v20のサポートは終了、Node.js v26のサポート開始）。
+* **【重要】環境要件の更新**: **Node.js v20 のサポート終了**に伴い、**Node.js v22 (またはv26) および TypeScript v6.0 が必須**となります。
 * AIコーディングアシスタント用のエージェントスキル（`angular-new-app`, `angular-developer`）を実装。
 * ブラウザ駆動AI向けの実験的API `WebMCP`（`provideExperimentalWebMcpTools` 等）の導入。
 
 ### Deprecations (非推奨) / Removals (削除)
 
 #### core
-
 * 従来の `@Injectable({ providedIn: 'root' })` は引き続き動作しますが、今後は新しい `@Service` への移行が推奨されます。
 
 #### compiler / platform-browser
-
 * 過去の古いブラウザ向けのエミュレートされた挙動である、レガシーな「シャドーCSSカプセル化ポリフィル（Shadow CSS encapsulation polyfills）」および「レガシーなシャドーDOMセレクタサポート」が完全に削除されました。これに伴い、`:host` や `:host-context` の内部ハンドリングが大幅にクリーンかつシンプル化されています。古いスタイリングに依存していたアプリケーションは念のため注意してください。
 
 #### build / CLI
-
 * Webpackベースのビルドサポートが非推奨（Deprecated）となりました。Angularチームは今後、超高速な「TSGoベースのapplication builder」への移行を完全に推奨しています。
 
 ### 破壊的変更・非推奨の一覧表
@@ -289,11 +261,11 @@ Angular v21から導入された、AIがソースコードを理解・編集し�
 | 変更対象 | 区分 | 概要 | 備考・対応方法／注意点 |
 | --- | --- | --- | --- |
 | **Change Detection デフォルト** | 変更 | 新規作成されるコンポーネントのデフォルト変更検出が `OnPush` に。 | 既存のアプリには影響しないようマイグレーションが走りますが、新規開発時は意識する必要があります。 |
-| **paramsInheritanceStrategy** | 破壊的変更 | ルーターのパラメータ引き継ぎ戦略のデフォルトが `'always'` に。 | 親ルートのパラメータを自動で引き継ぎます。以前の挙動に戻すには `withRouterConfig({ paramsInheritanceStrategy: 'emptyOnly' })` を明示します。 |
+| **paramsInheritanceStrategy** | 破壊的変更 | ルーターのパラメータ引き継ぎ戦略のデフォルトが `'always'` に。 | **【注意】自動マイグレーションなし。** 手動での確認と修正が必要です。 |
 | **canMatch 引数** | 破壊的変更 | `canMatch` ガード関数に第3引数 `currentSnapshot` が必須化。 | 自動マイグレーション（Schematics）が提供されるため、アップデートコマンドで自動置換可能です。 |
 | **HTTP Client** | 変更 | 通信裏の仕組みがデフォルトで `Fetch API` に。 | 近年のモダンブラウザ標準に合わせた最適化です。 |
 | **Incremental Hydration** | 変更 | SSR利用時、インクリメンタルハイドレーションが標準でONに。 | オプトアウトしたい場合は、`provideClientHydration(withNoIncrementalHydration())` を使用します。 |
-| **環境要件 (TS / Node)** | 破壊的変更 | TypeScript v6.0 未満、および Node.js v20 のサポート終了。 | アップデート前に Node.js v22（またはv26）環境、および TS v6 への更新が必要です。 |
+| **環境要件 (TS / Node)** | 破壊的変更 | TypeScript v6.0 未満、および Node.js v20 のサポート終了。 | **重要：** アップデート前に Node.js v22（またはv26）環境、1つ以上への更新が必要です。 |
 | **Webpack サポート** | 非推奨 | Webpackを用いた従来のビルド機構が非推奨に。 | TSGoベースの新しい `application builder` への完全移行・ refactor が推奨されます。 |
 | **Shadow CSS ポリフィル** | 削除 | 古いシャドーCSSカプセル化ポリフィル、レガシーセレクタの削除。 | `:host` などのハンドリングがシンプル化。極端に古い emulated-encapsulation スタイルを使っていないか確認してください。 |
 
