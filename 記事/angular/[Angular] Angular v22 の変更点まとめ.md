@@ -13,7 +13,7 @@
   - [6. ルーティングにおけるデフォルト挙動の変更（破壊的変更）](#6-ルーティングにおけるデフォルト挙動の変更破壊的変更)
     - [① `paramsInheritanceStrategy` のデフォルトが `'always'` に変更](#-paramsinheritancestrategy-のデフォルトが-always-に変更)
     - [② `canMatch` ガード関数の引数変更](#-canmatch-ガード関数の引数変更)
-  - [7. AI・Agent対応の強化（WebMCPツールの実験的導入）](#7-aiagent対応の強化webmcpツールの実験的導入)
+  - [7. AI・Agent対応の強化](#7-aiagent対応の強化)
 - [まとめ](#まとめ)
   - [主な Major Features \& Breaking Changes 一覧](#主な-major-features--breaking-changes-一覧)
     - [core](#core)
@@ -267,10 +267,27 @@ const routes: Routes = [
 ];
 ```
 
-### 7. AI・Agent対応の強化（WebMCPツールの実験的導入）
+### 7. AI・Agent対応の強化
 
-Angular v21から導入された、AIがソースコードを理解・編集しやすくするための「Angular MCP (Model Context Protocol) Server」がさらに成熟し、新たに `angular-new-app`（新規プロジェクト作成ガイドライン）や `angular-developer`（アーキテクチャ案内・コード生成）といった「Agent Skills」が追加されました。
-さらに、ブラウザ上のAIエージェントがアプリケーションのフォームやサービスを型安全なツール（Typed tools）として直接呼び出せるようにする、実験的な機能 **WebMCP**（`provideExperimentalWebMcpTools`）が追加されています。
+Angular v21から導入された AIがソースコードを理解・編集しやすくするための「Angular MCP (Model Context Protocol) Server」がさらに成熟しました。
+新たに
+
+- `angular-new-app`（新規プロジェクト作成ガイドライン）や
+- `angular-developer`（アーキテクチャ案内・コード生成）といった
+  
+「Agent Skills」が追加されました。
+
+**Agent Skills**
+
+こちらに公開されています。( https://github.com/angular/skills )
+またこちらにドキュメントも用意されています。( https://angular.jp/ai/agent-skills )
+
+さらに、ブラウザ上のAIエージェントがアプリケーションのフォームやサービスを型安全なツール（Typed tools）として直接呼び出せるようにする、実験的な機能
+
+- **WebMCP**（`provideExperimentalWebMcpTools`）が
+  - https://angular.jp/ai/webmcp
+
+追加されています。
 
 ---
 
